@@ -3,7 +3,7 @@ package utils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
-public class LetterEvent extends ActionEvent implements EventHandler<ActionEvent> {
+public class LetterEvent implements EventHandler<ActionEvent> {
     private final char letter;
 
     public LetterEvent(char letter) {

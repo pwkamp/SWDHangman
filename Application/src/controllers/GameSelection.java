@@ -90,6 +90,7 @@ public class GameSelection {
             Stage currentStage = (Stage) joinGame.getScene().getWindow();
             currentStage.setScene(new Scene(root));
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println(e);
             System.out.println(e.getMessage());
         }

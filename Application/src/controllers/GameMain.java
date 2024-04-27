@@ -145,10 +145,14 @@ public class GameMain {
 
     private ArrayList<Button> letterButtons;
 
+    private ArrayList<Text> players;
+
     @FXML
     public void initialize() {
         setLetterButtons();
         setLetterButtonActions();
+        //setPlayers();
+        //setPlayersText();
         leaveGameButton.setOnAction(actionEvent -> leaveGame());
     }
 
@@ -198,6 +202,37 @@ public class GameMain {
         } catch (Exception e) {
             System.out.println(e);
             System.out.println(e.getMessage());
+        }
+    }
+
+    //TODO: Implement setUsername server / client functionality
+    private void setUsername() {
+
+    }
+
+    //TODO: Implement setCoins server / client functionality
+    private void setCoins() {
+
+    }
+
+    private void setPlayers() {
+        players.add(player1Text);
+        players.add(player2Text);
+        players.add(player3Text);
+        players.add(player4Text);
+        players.add(player5Text);
+        players.add(player6Text);
+        players.add(player7Text);
+        players.add(player8Text);
+        players.add(player9Text);
+        players.add(player10Text);
+    }
+
+
+    //TODO: Implement setPlayersText server / client functionality
+    private void setPlayersText() {
+        for (Text player : players) {
+            player.setText("");
         }
     }
 
