@@ -44,7 +44,7 @@ public class Login {
 
     private void loginClicked() {
         //TODO: Implement login functionality
-        System.out.println("Login Clicked");
+        Debugger.debug("Login Clicked");
     }
 
 }
