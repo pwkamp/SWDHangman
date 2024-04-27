@@ -26,7 +26,7 @@
    <children>
       <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
-            <Label minHeight="-Infinity" text="Enter your Email And Password to Create Your Account" wrapText="true" VBox.vgrow="ALWAYS">
+            <Label minHeight="-Infinity" text="Enter a Username And Password to Create Your Account" wrapText="true" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
