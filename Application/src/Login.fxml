@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Login">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -31,17 +31,17 @@
                   <Insets bottom="5.0" />
                </VBox.margin>
             </Label>
-            <TextField promptText="Email">
+            <TextField fx:id="username" promptText="Email">
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin>
             </TextField>
-            <PasswordField promptText="Password">
+            <PasswordField fx:id="password" promptText="Password">
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin>
             </PasswordField>
-            <Button mnemonicParsing="false" text="Login" textAlignment="CENTER" />
+            <Button fx:id="login" mnemonicParsing="false" text="Login" textAlignment="CENTER" />
          </children>
       </VBox>
       <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1">
@@ -53,5 +53,6 @@
             </Label>
          </children>
       </StackPane>
+      <Button fx:id="back" mnemonicParsing="false" text="Back" GridPane.columnIndex="2" GridPane.rowIndex="2" />
    </children>
 </GridPane>

@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CreateAccount">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -31,22 +31,22 @@
                   <Insets />
                </VBox.margin>
             </Label>
-            <TextField promptText="Email">
+            <TextField fx:id="username" promptText="Email">
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin>
             </TextField>
-            <PasswordField promptText="Password">
+            <PasswordField fx:id="password1" promptText="Password">
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin>
             </PasswordField>
-            <PasswordField promptText="Confirm Password">
+            <PasswordField fx:id="password2" promptText="Confirm Password">
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin>
             </PasswordField>
-            <Button mnemonicParsing="false" text="Create Account" textAlignment="CENTER" />
+            <Button fx:id="createAccount" mnemonicParsing="false" text="Create Account" textAlignment="CENTER" />
          </children>
       </VBox>
       <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1">
@@ -58,5 +58,6 @@
             </Label>
          </children>
       </StackPane>
+      <Button fx:id="back" mnemonicParsing="false" text="Back" GridPane.columnIndex="2" GridPane.rowIndex="2" />
    </children>
 </GridPane>
