@@ -28,7 +28,7 @@ public class Login {
     TextField username;
 
     @FXML
-    void initialize() {
+    public void initialize() {
         back.setOnAction(actionEvent -> backClicked());
         login.setOnAction(actionEvent -> loginClicked());
     }

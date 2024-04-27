@@ -35,11 +35,13 @@ public class GameSelection {
     Text coins;
 
     @FXML
-    void initialize() {
+    public void initialize() {
         Debugger.debug("Game Selection Initialized");
         logout.setOnAction(actionEvent -> logoutClicked());
         setUsername();
         setCoins();
+
+        joinGame.setOnAction(actionEvent -> joinGameClicked());
     }
 
     private void logoutClicked() {
@@ -62,6 +64,8 @@ public class GameSelection {
         if (validateGameCode()) {
             Debugger.debug("Game Code is valid");
         }
+
+        startGame();
     }
 
     private boolean validateGameCode() {
@@ -73,6 +77,21 @@ public class GameSelection {
             alert.setHeaderText("Game Code must be 6 characters long");
             alert.showAndWait();
             return false;
+        }
+    }
+
+
+    //TODO: Remove, This method is for testing purposes ONLY
+    private void startGame() {
+        try {
+            //TODO: Add any needed functionality to logout that does not involve JavaFX scene switching back to the Main Menu
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/scenes/GameMain.fxml")));
+            // Get the current window
+            Stage currentStage = (Stage) joinGame.getScene().getWindow();
+            currentStage.setScene(new Scene(root));
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println(e.getMessage());
         }
     }
 

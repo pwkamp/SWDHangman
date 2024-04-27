@@ -18,7 +18,7 @@ public class MainMenu {
     private Button createAccount;
 
     @FXML
-    void initialize() {
+    public void initialize() {
         login.setOnAction(actionEvent -> loginClicked());
         createAccount.setOnAction(actionEvent -> createAccountClicked());
 

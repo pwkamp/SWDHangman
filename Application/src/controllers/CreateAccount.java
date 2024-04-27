@@ -33,7 +33,7 @@ public class CreateAccount {
     TextField username;
 
     @FXML
-    void initialize() {
+    public void initialize() {
         back.setOnAction(actionEvent -> backClicked());
         createAccount.setOnAction(actionEvent -> createAccountClicked());
     }
