@@ -10,16 +10,21 @@ public class ServerDriver {
 
         System.out.println("Random word: " + words.getRandomWord());
 
-        DBConnection dbConnection = new DBConnection();
+        DBConnection dbConnection = new DBConnection(DBConnection.TEST_DATABASE_URL, "root", "");
 
         // Example on how to use DBConnection class
         //If errors, see: https://www.javatpoint.com/no-suitable-driver-found-for-jdbc
 
         ResultSet set;
         try {
-            dbConnection.connect(DBConnection.TEST_DATABASE_URL, "root", "");
+            dbConnection.connect();
             dbConnection.createUsersTable();
-            //set = dbConnection.sendQuery("SELECT * FROM words");
+            dbConnection.createUser("test", "password");
+            if (dbConnection.userExists("test")) {
+                System.out.println("User exists");
+            } else {
+                System.out.println("User does not exist");
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
