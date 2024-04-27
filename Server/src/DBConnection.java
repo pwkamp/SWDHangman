@@ -1,6 +1,8 @@
 import com.mysql.cj.Query;
 
 import java.sql.*;
+import java.util.Locale;
+import java.util.Random;
 
 //TODO: Add more database connection functionality
 //If errors, see: https://www.javatpoint.com/no-suitable-driver-found-for-jdbc
@@ -204,6 +206,67 @@ public class DBConnection {
         }
         return -1;
     }
+
+    public boolean createGame(String gameLeader, String joinCode) {
+        try {
+            Statement statement = connection.createStatement();
+            statement.executeUpdate("INSERT INTO hangman_games (game_leader, join_code) VALUES ('" + gameLeader + "', '" + joinCode + "');");
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+    public boolean joinGame(String player, String joinCode) {
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet set = statement.executeQuery("SELECT * FROM hangman_games WHERE join_code = '" + joinCode + "';");
+            if (set.next()) {
+//                String players = set.getString("player1");
+                for (int i = 2; i <= 9; i++) {
+                    if (set.getString("player" + i) == null) {
+//                        players += ", " + player;
+                        statement.executeUpdate("UPDATE hangman_games SET player" + i + " = '" + player + "' WHERE join_code = '" + joinCode + "';");
+                        return true;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public String generateGameCode() {
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toLowerCase();
+        StringBuilder gameCode = new StringBuilder();
+        Random rnd = new Random();
+
+        // Generate a random 6-character game code
+        for (int i = 0; i < 6; i++) {
+            gameCode.append(characters.charAt(rnd.nextInt(characters.length())));
+        }
+
+        // Check if the generated game code already exists in the hangman_games table
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) AS count FROM hangman_games WHERE join_code = '" + gameCode.toString() + "'");
+            resultSet.next();
+            int count = resultSet.getInt("count");
+
+            // If the game code exists, generate a new one recursively
+            if (count > 0) {
+                return generateGameCode();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return gameCode.toString();
+    }
+
 
     public Connection getConnection() {
         return connection;
