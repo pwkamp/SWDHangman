@@ -1,3 +1,5 @@
+package controllers;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,6 +10,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.util.Objects;
+
+import utils.Debugger;
 
 public class Login {
 
@@ -31,7 +35,7 @@ public class Login {
 
     private void backClicked() {
         try {
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("MainMenu.fxml")));
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/scenes/MainMenu.fxml")));
             // Get the current window
             Stage currentStage = (Stage) back.getScene().getWindow();
             currentStage.setScene(new Scene(root));
@@ -51,7 +55,7 @@ public class Login {
 
     private void loginSuccess() {
         try {
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("GameSelection.fxml")));
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/scenes/GameSelection.fxml")));
             // Get the current window
             Stage currentStage = (Stage) login.getScene().getWindow();
             currentStage.setScene(new Scene(root));

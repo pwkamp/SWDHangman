@@ -25,7 +25,7 @@ public class ApplicationDriver extends Application {
      */
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("MainMenu.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("scenes/MainMenu.fxml")));
 
         Scene scene = new Scene(root); // attach scene graph to scene
         stage.setTitle("Hangman"); // displayed in window's title bar

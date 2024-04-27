@@ -1,3 +1,5 @@
+package controllers;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,6 +11,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.Objects;
+
+import utils.Debugger;
 
 public class GameSelection {
 
@@ -41,7 +45,7 @@ public class GameSelection {
     private void logoutClicked() {
         try {
             //TODO: Add any needed functionality to logout that does not involve JavaFX scene switching back to the Main Menu
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("MainMenu.fxml")));
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/scenes/MainMenu.fxml")));
             // Get the current window
             Stage currentStage = (Stage) logout.getScene().getWindow();
             currentStage.setScene(new Scene(root));

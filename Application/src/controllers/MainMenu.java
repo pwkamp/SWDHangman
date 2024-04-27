@@ -1,13 +1,11 @@
-import javafx.application.Platform;
+package controllers;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.stage.Window;
 
 import java.util.Objects;
 
@@ -28,7 +26,7 @@ public class MainMenu {
 
     public void loginClicked() {
         try {
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("Login.fxml")));
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/scenes/Login.fxml")));
             // Get the current window
             Stage currentStage = (Stage) login.getScene().getWindow();
             currentStage.setScene(new Scene(root));
@@ -39,7 +37,7 @@ public class MainMenu {
     }
     public void createAccountClicked() {
         try {
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("CreateAccount.fxml")));
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/scenes/CreateAccount.fxml")));
             // Get the current window
             Stage currentStage = (Stage) login.getScene().getWindow();
             currentStage.setScene(new Scene(root));

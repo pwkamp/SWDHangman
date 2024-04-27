@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CreateAccount">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Login">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -26,9 +26,9 @@
    <children>
       <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
-            <Label minHeight="-Infinity" text="Enter your Email And Password to Create Your Account" wrapText="true" VBox.vgrow="ALWAYS">
+            <Label text="Enter your Email And Password to controllers.Login" wrapText="true">
                <VBox.margin>
-                  <Insets />
+                  <Insets bottom="5.0" />
                </VBox.margin>
             </Label>
             <TextField fx:id="username" promptText="Username">
@@ -36,17 +36,12 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
             </TextField>
-            <PasswordField fx:id="password1" promptText="Password">
+            <PasswordField fx:id="password" promptText="Password">
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin>
             </PasswordField>
-            <PasswordField fx:id="password2" promptText="Confirm Password">
-               <VBox.margin>
-                  <Insets bottom="10.0" />
-               </VBox.margin>
-            </PasswordField>
-            <Button fx:id="createAccount" mnemonicParsing="false" text="Create Account" textAlignment="CENTER" />
+            <Button fx:id="login" mnemonicParsing="false" text="Login" textAlignment="CENTER" />
          </children>
       </VBox>
       <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1">

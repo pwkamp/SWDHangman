@@ -1,3 +1,5 @@
+package utils;
+
 public class Debugger {
     public static void debug(String message) {
         boolean debug = true;
