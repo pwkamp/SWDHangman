@@ -42,6 +42,7 @@ public class GameSelection {
         setCoins();
 
         joinGame.setOnAction(actionEvent -> joinGameClicked());
+        createGame.setOnAction(actionEvent -> createGame());
     }
 
     private void logoutClicked() {
@@ -65,7 +66,7 @@ public class GameSelection {
             Debugger.debug("Game Code is valid");
         }
 
-        startGame();
+        joinGame();
     }
 
     private boolean validateGameCode() {
@@ -81,11 +82,25 @@ public class GameSelection {
     }
 
 
-    //TODO: Remove, This method is for testing purposes ONLY
-    private void startGame() {
+    private void joinGame() {
         try {
             //TODO: Add any needed functionality to logout that does not involve JavaFX scene switching back to the Main Menu
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/scenes/GameMain.fxml")));
+            // Get the current window
+            Stage currentStage = (Stage) joinGame.getScene().getWindow();
+            currentStage.setScene(new Scene(root));
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e);
+            System.out.println(e.getMessage());
+        }
+    }
+
+
+    private void createGame() {
+        try {
+            //TODO: Add any needed functionality to logout that does not involve JavaFX scene switching back to the Main Menu
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/scenes/GameLeader.fxml")));
             // Get the current window
             Stage currentStage = (Stage) joinGame.getScene().getWindow();
             currentStage.setScene(new Scene(root));
