@@ -19,13 +19,20 @@ public class ServerDriver {
         try {
             dbConnection.connect();
             dbConnection.createUsersTable();
-            dbConnection.createUser("test", "password");
+            dbConnection.createGameTable();
+
+            System.out.println("User created: " + dbConnection.createUser("test", "password"));
+
             if (dbConnection.userExists("test")) {
                 System.out.println("User exists");
                 User user = dbConnection.getUser("test");
                 System.out.println("Username: " + user.getUsername());
                 System.out.println("Password: " + user.getPassword());
                 System.out.println("Coins: " + user.getCoins());
+
+                dbConnection.addUserCoins("test", 100);
+                user = dbConnection.getUser("test");
+                System.out.println("New Coins: " + user.getCoins());
 
 
             } else {
