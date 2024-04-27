@@ -1,4 +1,3 @@
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -7,10 +6,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.stage.Window;
 
 import java.util.Objects;
 
@@ -53,7 +49,7 @@ public class CreateAccount {
     private void createAccountClicked() {
         Debugger.debug("Create Account Clicked");
         if (validatePassword() && validateUsername()) {
-            //TODO: Implement create account server functionality
+            //TODO: Implement create account server functionality including checking if the username is taken already
         }
     }
 
