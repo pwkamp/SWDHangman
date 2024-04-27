@@ -1,7 +1,9 @@
-import com.mysql.cj.Query;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
-import java.sql.*;
-import java.util.Locale;
 import java.util.Random;
 
 //TODO: Add more database connection functionality
@@ -11,10 +13,10 @@ public class DBConnection {
 
     private Connection connection;
 
-    private String username;
-    private String password;
+    private final String username;
+    private final String password;
 
-    private String url;
+    private final String url;
 
     public DBConnection(String url, String username, String password) {
         this.url = url;
@@ -50,6 +52,27 @@ public class DBConnection {
 
     public void createGameTable() {
         String query = "CREATE TABLE IF NOT EXISTS hangman_games (game_id INT AUTO_INCREMENT PRIMARY KEY, join_code VARCHAR(6) UNIQUE NOT NULL, game_leader VARCHAR(255) NOT NULL, game_state VARCHAR(255) DEFAULT 'waiting', word VARCHAR(255), letters_guessed VARCHAR(255), player1 VARCHAR(255), player2 VARCHAR(255), player3 VARCHAR(255), player4 VARCHAR(255), player5 VARCHAR(255), player6 VARCHAR(255), player7 VARCHAR(255), player8 VARCHAR(255), player9 VARCHAR(255))";
+        try {
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void createLogTable() {
+        String query = "CREATE TABLE IF NOT EXISTS logs (log_id INT AUTO_INCREMENT PRIMARY KEY, log_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP, log_message VARCHAR(255))";
+        try {
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void log(String message) {
+
+        String query = "INSERT INTO logs (log_message) VALUES ('" + message + "')";
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate(query);
@@ -240,7 +263,7 @@ public class DBConnection {
     }
 
     public String generateGameCode() {
-        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toLowerCase();
+        String characters = "abcdefghijklmnopqrstuvwxyz0123456789";
         StringBuilder gameCode = new StringBuilder();
         Random rnd = new Random();
 
@@ -252,7 +275,7 @@ public class DBConnection {
         // Check if the generated game code already exists in the hangman_games table
         try {
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) AS count FROM hangman_games WHERE join_code = '" + gameCode.toString() + "'");
+            ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) AS count FROM hangman_games WHERE join_code = '" + gameCode + "'");
             resultSet.next();
             int count = resultSet.getInt("count");
 
