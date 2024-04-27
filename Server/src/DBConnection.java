@@ -34,20 +34,6 @@ public class DBConnection {
         }
     }
 
-    public Connection getConnection() {
-        return connection;
-    }
-
-    public ResultSet sendQuery(String query) {
-        try {
-            Statement statement = connection.createStatement();
-            return statement.executeQuery(query);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     public void createUsersTable() {
         try {
             Statement statement = connection.createStatement();
@@ -70,6 +56,10 @@ public class DBConnection {
         return false;
     }
 
+    public void createUser(User user) {
+        createUser(user.getUsername(), user.getPassword());
+    }
+
     public void createUser(String user, String pass) {
         user = user.toLowerCase();
         try {
@@ -78,5 +68,33 @@ public class DBConnection {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public User getUser(String user) {
+        user = user.toLowerCase();
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet set = statement.executeQuery("SELECT * FROM users WHERE username = '" + user + "';");
+            if (set.next()) {
+                return new User(set.getString("username"), set.getString("password"), set.getInt("coins"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Connection getConnection() {
+        return connection;
+    }
+
+    public ResultSet sendQuery(String query) {
+        try {
+            Statement statement = connection.createStatement();
+            return statement.executeQuery(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

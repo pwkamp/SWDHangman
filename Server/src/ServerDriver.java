@@ -22,6 +22,12 @@ public class ServerDriver {
             dbConnection.createUser("test", "password");
             if (dbConnection.userExists("test")) {
                 System.out.println("User exists");
+                User user = dbConnection.getUser("test");
+                System.out.println("Username: " + user.getUsername());
+                System.out.println("Password: " + user.getPassword());
+                System.out.println("Coins: " + user.getCoins());
+
+
             } else {
                 System.out.println("User does not exist");
             }
