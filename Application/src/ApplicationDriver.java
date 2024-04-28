@@ -3,8 +3,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import utils.Debugger;
 
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * ApplicationDriver.java
@@ -31,6 +34,9 @@ public class ApplicationDriver extends Application {
         stage.setTitle("Hangman"); // displayed in window's title bar
         stage.setScene(scene); // attach scene to stage
         stage.show(); // display the stage
+        ExecutorService executorService = Executors.newCachedThreadPool();
+        Client client = new Client("localhost", 8080);
+        executorService.execute(client);
     }
 
     public static void main(String[] args) {

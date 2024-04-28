@@ -35,7 +35,6 @@ public class ServerDriver {
                 user = dbConnection.getUser("test");
                 System.out.println("New Coins: " + user.getCoins());
 
-
             } else {
                 System.out.println("User does not exist");
             }
