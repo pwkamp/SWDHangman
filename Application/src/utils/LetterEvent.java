@@ -4,6 +4,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
 public class LetterEvent implements EventHandler<ActionEvent> {
+
+    Client client = Client.getInstance();
     private final char letter;
 
     public LetterEvent(char letter) {
@@ -19,5 +21,6 @@ public class LetterEvent implements EventHandler<ActionEvent> {
     @Override
     public void handle(ActionEvent actionEvent) {
         System.out.println("Letter: " + getLetter() + " clicked");
+        client.sendData("LETTER " + getLetter());
     }
 }

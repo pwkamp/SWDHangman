@@ -9,13 +9,19 @@ import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
 import javafx.stage.Stage;
+import utils.Client;
+import utils.Debugger;
+import utils.Game;
 import utils.LetterEvent;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 //TODO: Everything
 public class GameMain {
+    Client client = Client.getInstance();
 
     @FXML
     private Text roundText;
@@ -30,34 +36,33 @@ public class GameMain {
     private Text playersText;
 
     @FXML
-    private Text player1Text;
+    private Text player1Text = new Text();
 
     @FXML
-    private Text player2Text;
+    private Text player2Text = new Text();
 
     @FXML
-    private Text player3Text;
+    private Text player3Text= new Text();
 
     @FXML
-    private Text player4Text;
+    private Text player4Text = new Text();
 
     @FXML
-    private Text player5Text;
+    private Text player5Text= new Text();
+    @FXML
+    private Text player6Text= new Text();
 
     @FXML
-    private Text player6Text;
+    private Text player7Text= new Text();
 
     @FXML
-    private Text player7Text;
+    private Text player8Text= new Text();
 
     @FXML
-    private Text player8Text;
+    private Text player9Text= new Text();
 
     @FXML
-    private Text player9Text;
-
-    @FXML
-    private Text player10Text;
+    private Text player10Text= new Text();
 
     @FXML
     private ImageView hangmanImageView;
@@ -143,17 +148,34 @@ public class GameMain {
     @FXML
     private Button leaveGameButton;
 
+    @FXML
+    private Text revealedWordText;
+
     private ArrayList<Button> letterButtons;
 
-    private ArrayList<Text> players;
+    private ArrayList<Text> players = new ArrayList<>();
+
+    private ExecutorService executorService = Executors.newCachedThreadPool();
+    private Game game;
 
     @FXML
     public void initialize() {
         setLetterButtons();
         setLetterButtonActions();
-        //setPlayers();
-        //setPlayersText();
+
+        for (Button button : letterButtons) {
+            button.setDisable(true);
+        }
+
+        setPlayers();
+        setPlayersText();
+        playersText.setText("");
+
         leaveGameButton.setOnAction(actionEvent -> leaveGame());
+
+        game = new Game(players, letterButtons, hangmanImageView, revealedWordText, false);
+        executorService.execute(game);
+
     }
 
     private void setLetterButtons() {
@@ -207,13 +229,10 @@ public class GameMain {
 
     //TODO: Implement setUsername server / client functionality
     private void setUsername() {
-
+        usernameText.setText(client.getUsername());
     }
 
     //TODO: Implement setCoins server / client functionality
-    private void setCoins() {
-
-    }
 
     private void setPlayers() {
         players.add(player1Text);

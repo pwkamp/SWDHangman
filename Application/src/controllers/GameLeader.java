@@ -9,13 +9,19 @@ import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
 import javafx.stage.Stage;
+import utils.Client;
+import utils.Debugger;
+import utils.Game;
 import utils.LetterEvent;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 //TODO: Everything
 public class GameLeader {
+    private Client client = Client.getInstance();
 
     @FXML
     private Text roundText;
@@ -30,34 +36,33 @@ public class GameLeader {
     private Text playersText;
 
     @FXML
-    private Text player1Text;
+    private Text player1Text = new Text();
 
     @FXML
-    private Text player2Text;
+    private Text player2Text = new Text();
 
     @FXML
-    private Text player3Text;
+    private Text player3Text= new Text();
 
     @FXML
-    private Text player4Text;
+    private Text player4Text = new Text();
 
     @FXML
-    private Text player5Text;
+    private Text player5Text= new Text();
+    @FXML
+    private Text player6Text= new Text();
 
     @FXML
-    private Text player6Text;
+    private Text player7Text= new Text();
 
     @FXML
-    private Text player7Text;
+    private Text player8Text= new Text();
 
     @FXML
-    private Text player8Text;
+    private Text player9Text= new Text();
 
     @FXML
-    private Text player9Text;
-
-    @FXML
-    private Text player10Text;
+    private Text player10Text= new Text();
 
     @FXML
     private ImageView hangmanImageView;
@@ -143,17 +148,90 @@ public class GameLeader {
     @FXML
     private Button leaveGameButton;
 
+    @FXML
+    private Button startGameButton;
+
+    @FXML
+    private Button word1Button;
+
+    @FXML
+    private Button word2Button;
+
+    @FXML
+    private Button word3Button;
+
+    @FXML
+    private Text revealedWordText;
+
     private ArrayList<Button> letterButtons;
 
-    private ArrayList<Text> players;
+    private ArrayList<Text> players = new ArrayList<>();
+
+    ExecutorService executorService = Executors.newCachedThreadPool();
+    Game game;
 
     @FXML
     public void initialize() {
         setLetterButtons();
         setLetterButtonActions();
-        //setPlayers();
-        //setPlayersText();
+
+        for (Button button : letterButtons) {
+            button.setDisable(true);
+        }
+        setupLeaderFunctions();
+        setPlayers();
+        setPlayersText();
+        playersText.setText("");
         leaveGameButton.setOnAction(actionEvent -> leaveGame());
+        game = new Game(players, letterButtons, hangmanImageView, revealedWordText, true);
+        executorService.execute(game);
+    }
+
+    private void setupLeaderFunctions() {
+        startGameButton.setText("Start Game: " + client.getGameCode());
+        startGameButton.setOnAction(actionEvent -> startGameClicked());
+        startGameButton.setDisable(true);
+
+        word1Button.setOnAction(actionEvent -> word1ButtonClicked());
+        word2Button.setOnAction(actionEvent -> word2ButtonClicked());
+        word3Button.setOnAction(actionEvent -> word3ButtonClicked());
+
+        word1Button.setText(client.getWordOptions()[0]);
+        word2Button.setText(client.getWordOptions()[1]);
+        word3Button.setText(client.getWordOptions()[2]);
+    }
+
+    private void startGameClicked() {
+        Debugger.debug("Start Game Clicked");
+        client.sendData("START");
+        startGameButton.setDisable(true);
+    }
+
+    private void word1ButtonClicked() {
+        Debugger.debug("Word 1 Clicked");
+        client.sendData("WORD 1");
+        disableWordButtons();
+        startGameButton.setDisable(false);
+    }
+
+    private void word2ButtonClicked() {
+        Debugger.debug("Word 2 Clicked");
+        client.sendData("WORD 2");
+        disableWordButtons();
+        startGameButton.setDisable(false);
+    }
+
+    private void word3ButtonClicked() {
+        Debugger.debug("Word 3 Clicked");
+        client.sendData("WORD 3");
+        disableWordButtons();
+        startGameButton.setDisable(false);
+    }
+
+    private void disableWordButtons() {
+        word1Button.setDisable(true);
+        word2Button.setDisable(true);
+        word3Button.setDisable(true);
     }
 
     private void setLetterButtons() {
@@ -194,6 +272,7 @@ public class GameLeader {
 
     //TODO: Implement leaveGame server / client functionality
     private void leaveGame() {
+        client.sendData("LEAVEGAME");
         try {
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/scenes/GameSelection.fxml")));
             // Get the current window

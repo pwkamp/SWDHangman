@@ -21,7 +21,7 @@ public class Words {
 
         System.out.println(line);
         while (line != null) {
-            words.add(line);
+            words.add(line.toLowerCase());
             line = reader.readLine();
         }
     }

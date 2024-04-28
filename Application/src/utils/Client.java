@@ -1,11 +1,14 @@
 package utils;
 
+import javafx.scene.text.Text;
+
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * The utils.Client class represents the client in the networked application.
@@ -21,7 +24,15 @@ public final class Client implements Runnable {
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
     private String message = "";
+
     private final int port;
+
+    private String gameCode;
+    private String username;
+    private String password;
+    private String coins;
+    private String[] wordOptions;
+
 
     /**
      * Constructs a new client with the specified host and port.
@@ -140,4 +151,38 @@ public final class Client implements Runnable {
         }
     }
 
+    public void setGameCode(String gameCode) {
+        this.gameCode = gameCode;
+    }
+
+    public String getGameCode() {
+        return gameCode;
+    }
+
+    public void sendInfo() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("INFO ");
+        sb.append(username);
+        sb.append(" ");
+        sb.append(coins);
+        sb.append(" ");
+        sb.append(gameCode);
+        sendData(sb.toString());
+    }
+
+    public void setUsername(String text) {
+        this.username = text;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setWordOptions(String[] wordOptions) {
+        this.wordOptions = wordOptions;
+    }
+
+    public String[] getWordOptions() {
+        return wordOptions;
+    }
 }

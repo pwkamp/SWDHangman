@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -9,9 +10,14 @@ public class Server {
     private DBConnection dbConnection;
     ExecutorService executorService;
 
+    private ArrayList<GameHandler> games = new ArrayList<>();
+
+    private Words words;
+
     public Server(DBConnection dbConnection) {
         this.dbConnection = dbConnection;
         executorService = Executors.newCachedThreadPool();
+        words = new Words("res/SWD_words.csv");
     }
 
     public void startServer(int port) {
@@ -38,7 +44,36 @@ public class Server {
     }
 
     // TODO x3
-    public void createGame(ClientHandler client){}
-    public void joinGame(ClientHandler client, String code){}
-    public boolean gameExists(String code){return false;}
+    public boolean createGame(ClientHandler client){
+        // create a new game
+        GameHandler gameHandler = new GameHandler(client, dbConnection);
+        client.setGameHandler(gameHandler);
+        String[] wordOptions = new String[]{words.getRandomWord(), words.getRandomWord(), words.getRandomWord()};
+        gameHandler.setWordOptions(wordOptions);
+        client.sendMessage("CREATEGAME " + "success " + gameHandler.getJoinCode() + " " + wordOptions[0] + " " + wordOptions[1] + " " + wordOptions[2]);
+        games.add(gameHandler);
+        executorService.execute(gameHandler);
+        return true;
+    }
+    public void joinGame(ClientHandler client, String code, String name){
+        // join an existing game
+        for (GameHandler game : games) {
+            if (game.getJoinCode().equals(code)) {
+                game.addClient(client);
+                client.setGameHandler(game);
+                client.sendMessage("JOIN success");
+                client.setUsername(name);
+                return;
+            }
+        }
+        client.sendMessage("JOIN fail");
+    }
+    public boolean gameExistsActive(String code){
+        for (GameHandler game : games) {
+            if (game.getJoinCode().equals(code)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
