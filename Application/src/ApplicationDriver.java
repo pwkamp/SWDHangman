@@ -1,3 +1,4 @@
+import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -15,7 +16,7 @@ import java.util.concurrent.Executors;
  * Based on the TipCalculator.java class
  * @author Peter Kamp
  */
-public class Application extends javafx.application.Application {
+public class ApplicationDriver extends Application {
 
     /**
      * The start method is the main entry point for all JavaFX applications.
@@ -27,7 +28,7 @@ public class Application extends javafx.application.Application {
      */
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("scenes/ServerSelect.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("scenes/MainMenu.fxml")));
 
         Scene scene = new Scene(root); // attach scene graph to scene
         stage.setTitle("Hangman"); // displayed in window's title bar

@@ -1,4 +1,4 @@
-package JFXControllers;
+package controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 
 import java.util.Objects;
 
-public class MainMenuController {
+public class MainMenu {
 
     @FXML
     private Button login;

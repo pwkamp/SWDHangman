@@ -1,4 +1,4 @@
-package JFXControllers;
+package controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +15,7 @@ import java.util.Objects;
 import utils.Client;
 import utils.Debugger;
 
-public class LoginScreenController {
+public class Login {
 
     Client client = Client.getInstance();
 
