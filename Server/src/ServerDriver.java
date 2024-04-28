@@ -20,6 +20,7 @@ public class ServerDriver {
             dbConnection.connect();
             dbConnection.createUsersTable();
             dbConnection.createGameTable();
+            dbConnection.createLogTable();
 
             System.out.println("User created: " + dbConnection.createUser("test", "password"));
 
@@ -41,6 +42,9 @@ public class ServerDriver {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
+        Server connectionListener = new Server(dbConnection);
+        connectionListener.startServer(8080);
 
 
     }
