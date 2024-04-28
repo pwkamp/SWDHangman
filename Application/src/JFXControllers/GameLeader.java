@@ -9,8 +9,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
 import javafx.stage.Stage;
-import utils.Client;
-import utils.Debugger;
 import utils.LetterEvent;
 
 import java.util.ArrayList;
@@ -18,7 +16,6 @@ import java.util.Objects;
 
 //TODO: Everything
 public class GameLeader {
-    private Client client = Client.getInstance();
 
     @FXML
     private Text roundText;
@@ -146,9 +143,6 @@ public class GameLeader {
     @FXML
     private Button leaveGameButton;
 
-    @FXML
-    private Button startGameButton;
-
     private ArrayList<Button> letterButtons;
 
     private ArrayList<Text> players;
@@ -157,21 +151,9 @@ public class GameLeader {
     public void initialize() {
         setLetterButtons();
         setLetterButtonActions();
-
-        setup();
         //setPlayers();
         //setPlayersText();
         leaveGameButton.setOnAction(actionEvent -> leaveGame());
-        startGameButton.setOnAction(actionEvent -> startGameClicked());
-    }
-
-    private void setup() {
-        startGameButton.setText("Start Game: " + client.getGameCode());
-    }
-
-    private void startGameClicked() {
-        Debugger.debug("Start Game Clicked");
-        client.sendData("START");
     }
 
     private void setLetterButtons() {

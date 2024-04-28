@@ -21,7 +21,7 @@ import utils.Debugger;
 
 public class CreateAccount {
 
-    private Client client = Client.getInstance();
+    Client client = Client.getInstance();
 
     @FXML
     Button back;

@@ -17,7 +17,7 @@ import utils.Debugger;
 
 public class LoginScreenController {
 
-    private Client client = Client.getInstance();
+    Client client = Client.getInstance();
 
     @FXML
     Button back;
@@ -69,7 +69,6 @@ public class LoginScreenController {
     }
 
     private void loginSuccess() {
-        client.setUsername(username.getText());
         try {
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/scenes/GameSelection.fxml")));
             // Get the current window

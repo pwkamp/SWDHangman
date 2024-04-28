@@ -34,7 +34,6 @@ public class ClientHandler implements Runnable {
 
     @Override
     public void run() {
-
         loginClient();
 
         joinGame();
@@ -44,7 +43,11 @@ public class ClientHandler implements Runnable {
 
     private void joinGame() {
         while (true) {
-            String[] message = receiveMessage().split(" ");
+            String messageText = receiveMessage();
+            String[] message = new String[0];
+            if (messageText != null) {
+                message = messageText.split(" ");
+            }
 
             // join game
             if (message[0].equals("JOIN")) {
@@ -83,11 +86,15 @@ public class ClientHandler implements Runnable {
 
     private void loginClient() {
         while (true) {
-            String[] message = receiveMessage().split(" ");
+            String messageText = receiveMessage();
+            String[] message = new String[0];
+            if (messageText != null) {
+                message = messageText.split(" ");
+            }
 
             // invalid message length
             if (message.length != 3) {
-                sendMessage("Invalid request");
+                sendMessage("INVALID");
                 continue;
             }
 
@@ -96,11 +103,10 @@ public class ClientHandler implements Runnable {
                 boolean isSuccessful = dbConnection.createUser(message[1], message[2]);
                 if (isSuccessful) {
                     dbConnection.log("User created: " + message[1]);
-                    sendMessage("success");
-                    return;
+                    sendMessage("CREATE success");
+                    continue;
                 }
-
-                sendMessage("User already exists.");
+                sendMessage("CREATE fail");
                 continue;
             }
 
@@ -108,17 +114,17 @@ public class ClientHandler implements Runnable {
             if (message[0].equals("LOGIN")) {
                 if (!dbConnection.validateUser(message[1], message[2])) {
                     dbConnection.log("Failed login attempt: " + message[1]);
-                    sendMessage("User or password incorrect");
+                    sendMessage("LOGIN fail");
                     continue;
+                } else {
+                    dbConnection.log("User logged in: " + message[1]);
+                    sendMessage("LOGIN success");
+                    return;
                 }
-
-                dbConnection.log("User logged in: " + message[1]);
-                sendMessage("success");
-                return;
             }
 
             // Valid message results in early return. Reaching this point means something went wrong
-            sendMessage("Invalid request");
+            sendMessage("INVALID");
         }
     }
 

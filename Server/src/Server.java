@@ -1,6 +1,5 @@
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -9,8 +8,6 @@ public class Server {
     private ServerSocket server;
     private DBConnection dbConnection;
     ExecutorService executorService;
-
-    private ArrayList<GameHandler> games = new ArrayList<>();
 
     public Server(DBConnection dbConnection) {
         this.dbConnection = dbConnection;
@@ -41,32 +38,7 @@ public class Server {
     }
 
     // TODO x3
-    public boolean createGame(ClientHandler client){
-        // create a new game
-        GameHandler gameHandler = new GameHandler(client, dbConnection);
-        client.setGameHandler(gameHandler);
-        client.sendMessage("CREATEGAME " + "success " + gameHandler.getJoinCode());
-        games.add(gameHandler);
-        return true;
-    }
-    public void joinGame(ClientHandler client, String code){
-        // join an existing game
-        for (GameHandler game : games) {
-            if (game.getJoinCode().equals(code)) {
-                game.addClient(client);
-                client.setGameHandler(game);
-                client.sendMessage("JOIN success");
-                return;
-            }
-        }
-        client.sendMessage("JOIN fail");
-    }
-    public boolean gameExistsActive(String code){
-        for (GameHandler game : games) {
-            if (game.getJoinCode().equals(code)) {
-                return true;
-            }
-        }
-        return false;
-    }
+    public void createGame(ClientHandler client){}
+    public void joinGame(ClientHandler client, String code){}
+    public boolean gameExists(String code){return false;}
 }
