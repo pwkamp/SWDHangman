@@ -1,4 +1,4 @@
-package JFXControllers;
+package controllers;
 
 public class ServerSelectController {
 
