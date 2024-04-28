@@ -6,7 +6,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Arrays;
 
-// Recieves client socket and handles communication with client
+// Receives client socket and handles communication with client
 public class ClientHandler implements Runnable {
     private final Socket socket;
     private final DBConnection dbConnection;
@@ -14,12 +14,18 @@ public class ClientHandler implements Runnable {
     private final ObjectInputStream inputStream;
     private final Server parentServer;
     private GameHandler gameHandler;
+    private boolean isConnectionOpen;
+    private User user;
     String state;
 
     private String message = "";
 
     private String username;
 
+
+    public boolean isConnectionOpen() {
+        return isConnectionOpen;
+    }
 
     public ClientHandler(Socket socket, DBConnection dbConnection, Server parentServer) {
         dbConnection.log("Client connected: " + socket.getInetAddress() + ":" + socket.getPort());
@@ -42,39 +48,14 @@ public class ClientHandler implements Runnable {
     public void run() {
         loginClient();
 
-        setUpSelectionPage();
-
         joinGame();
 
         awaitGameHandler();
 
-        try {
-            processConnection();
-        } catch (EOFException eofException) {
-            //displayMessage("\nConnection Terminated");
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
-        } finally {
-            closeConnection();
-        }
+        runGame();
     }
 
-    /**
-     * Processes the connection by reading messages from the input stream until the server sends a termination message.
-     * @throws IOException if an I/O error occurs when reading from the input stream
-     * @author Peter Kamp
-     */
-    private void processConnection() throws IOException {
-
-        do {
-            try {
-                message = (String) inputStream.readObject();
-                System.out.println(message);
-                //displayMessage(message);
-            } catch (ClassNotFoundException classNotFoundException) {
-                //displayMessage("\nUnknown object.");
-            }
-        } while (!message.equals("\nCLIENT ► TERMINATE"));
+    private void runGame() {
     }
 
     /**
@@ -93,8 +74,7 @@ public class ClientHandler implements Runnable {
         }
     }
 
-
-    private void setUpSelectionPage() {
+    private void loginClient() {
         while (true) {
             String messageText = receiveMessage();
             String[] message = new String[0];
@@ -102,12 +82,41 @@ public class ClientHandler implements Runnable {
                 message = messageText.split(" ");
             }
 
-            if (message[0].equals("COINS")) {
-                sendMessage("COINS " + dbConnection.getUserCoins(message[1]));
-                return;
+            // invalid message length
+            if (message.length != 3) {
+                sendMessage("Invalid request");
+                continue;
             }
-        }
 
+            // create user
+            if (message[0].equals("CREATE")) {
+                boolean isSuccessful = dbConnection.createUser(message[1], message[2]);
+                if (isSuccessful) {
+                    dbConnection.log("User created: " + message[1]);
+                    sendMessage("success");
+                    return;
+                }
+
+                sendMessage("User already exists");
+                continue;
+            }
+
+            // login
+            if (message[0].equals("LOGIN")) {
+                if (!dbConnection.validateUser(message[1], message[2])) {
+                    dbConnection.log("Failed login attempt: " + message[1]);
+                    sendMessage("Username or password incorrect");
+                    continue;
+                } else {
+                    dbConnection.log("User logged in: " + message[1]);
+                    sendMessage("success");
+                    return;
+                }
+            }
+
+            // Valid message results in early return. Reaching this point means something went wrong
+            sendMessage("Invalid request");
+        }
     }
 
     private void joinGame() {
@@ -121,14 +130,15 @@ public class ClientHandler implements Runnable {
             // join game
             if (message[0].equals("JOIN")) {
                 if (message.length != 3) {
-                    sendMessage("INVALID");
+                    sendMessage("Invalid request");
                     continue;
                 }
 
                 if (!parentServer.gameExistsActive(message[1])) {
-                    sendMessage("JOIN fail");
+                    sendMessage("Game does not exist");
                     continue;
                 }
+                
                 setUsername(message[2]);
                 parentServer.joinGame(this, message[1], message[2]);
                 return;
@@ -137,7 +147,7 @@ public class ClientHandler implements Runnable {
             // create game
             if (message[0].equals("CREATEGAME")) {
                 if (message.length != 1) {
-                    sendMessage("INVALID");
+                    sendMessage("Invalid request");
                     continue;
                 }
 
@@ -149,51 +159,7 @@ public class ClientHandler implements Runnable {
 
 
             // Valid message results in early return. Reaching this point means something went wrong
-            sendMessage("INVALID");
-        }
-    }
-
-    private void loginClient() {
-        while (true) {
-            String messageText = receiveMessage();
-            String[] message = new String[0];
-            if (messageText != null) {
-                message = messageText.split(" ");
-            }
-
-            // invalid message length
-            if (message.length != 3) {
-                sendMessage("INVALID");
-                continue;
-            }
-
-            // create user
-            if (message[0].equals("CREATE")) {
-                boolean isSuccessful = dbConnection.createUser(message[1], message[2]);
-                if (isSuccessful) {
-                    dbConnection.log("User created: " + message[1]);
-                    sendMessage("CREATE success");
-                    continue;
-                }
-                sendMessage("CREATE fail");
-                continue;
-            }
-
-            // login
-            if (message[0].equals("LOGIN")) {
-                if (!dbConnection.validateUser(message[1], message[2])) {
-                    dbConnection.log("Failed login attempt: " + message[1]);
-                    sendMessage("LOGIN fail");
-                    continue;
-                } else {
-                    dbConnection.log("User logged in: " + message[1]);
-                    sendMessage("LOGIN success");
-                    return;
-                }
-            }
-
-            // Valid message results in early return. Reaching this point means something went wrong
-            sendMessage("INVALID");
+            sendMessage("Invalid request");
         }
     }
 
