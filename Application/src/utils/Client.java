@@ -1,4 +1,5 @@
-import java.awt.BorderLayout;
+package utils;
+
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -7,7 +8,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 /**
- * The Client class represents the client in the networked application.
+ * The utils.Client class represents the client in the networked application.
  * I.E the client and server can run on different machines and communicate over the network.
  * It handles the creation of the client socket, input and output streams, and the processing of the connection.
  * @author Peter Kamp
@@ -108,7 +109,7 @@ public final class Client implements Runnable {
         try {
             outputStream.writeObject(message);
             outputStream.flush(); // flush data to output
-            displayMessage("\nCLIENT ► " + message);
+            displayMessage("\n" + message);
         } catch (IOException ioException) {
             displayMessage("\nError writing object");
         }

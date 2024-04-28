@@ -3,7 +3,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import utils.Debugger;
+import utils.Client;
 
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
 
 /**
  * ApplicationDriver.java
- * Main class that loads and displays the Client Application.
+ * Main class that loads and displays the utils.Client Application.
  * This class extends the Application class from the JavaFX library.
  * Based on the TipCalculator.java class
  * @author Peter Kamp
@@ -34,9 +34,10 @@ public class ApplicationDriver extends Application {
         stage.setTitle("Hangman"); // displayed in window's title bar
         stage.setScene(scene); // attach scene to stage
         stage.show(); // display the stage
+
         ExecutorService executorService = Executors.newCachedThreadPool();
         Client client = new Client("localhost", 8080);
-        executorService.execute(client);
+        executorService.execute(Client.getInstance());
     }
 
     public static void main(String[] args) {

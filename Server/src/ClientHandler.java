@@ -43,7 +43,11 @@ public class ClientHandler implements Runnable {
 
     private void joinGame() {
         while (true) {
-            String[] message = receiveMessage().split(" ");
+            String messageText = receiveMessage();
+            String[] message = new String[0];
+            if (messageText != null) {
+                message = receiveMessage().split(" ");
+            }
 
             // join game
             if (message[0].equals("JOIN")) {
@@ -82,7 +86,11 @@ public class ClientHandler implements Runnable {
 
     private void loginClient() {
         while (true) {
-            String[] message = receiveMessage().split(" ");
+            String messageText = receiveMessage();
+            String[] message = new String[0];
+            if (messageText != null) {
+                message = receiveMessage().split(" ");
+            }
 
             // invalid message length
             if (message.length != 3) {

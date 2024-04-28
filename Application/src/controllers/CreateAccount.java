@@ -2,6 +2,7 @@ package controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -10,12 +11,17 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import java.net.URL;
 import java.util.Objects;
+import java.util.ResourceBundle;
 
+import utils.Client;
 import utils.Debugger;
 
 
 public class CreateAccount {
+
+    Client client = Client.getInstance();
 
     @FXML
     Button back;
@@ -54,6 +60,7 @@ public class CreateAccount {
         Debugger.debug("Create Account Clicked");
         if (validatePassword() && validateUsername()) {
             //TODO: Implement create account server functionality including checking if the username is taken already
+            client.sendData("CREATE " + username.getText() + " " + password1.getText());
         }
     }
 
@@ -92,5 +99,4 @@ public class CreateAccount {
             return false;
         }
     }
-
 }
