@@ -1,4 +1,4 @@
-package controllers;
+package JFXControllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +13,7 @@ import java.util.Objects;
 
 import utils.Debugger;
 
-public class Login {
+public class LoginScreenController {
 
     @FXML
     Button back;

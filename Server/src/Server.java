@@ -38,7 +38,10 @@ public class Server {
     }
 
     // TODO x3
-    public void createGame(ClientHandler client){}
+    public void createGame(ClientHandler client){
+        GameHandler game = new GameHandler();
+        game.addClient(client);
+    }
     public void joinGame(ClientHandler client, String code){}
     public boolean gameExists(String code){return false;}
 }

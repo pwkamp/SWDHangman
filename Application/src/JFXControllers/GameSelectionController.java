@@ -1,4 +1,4 @@
-package controllers;
+package JFXControllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,7 +14,7 @@ import java.util.Objects;
 
 import utils.Debugger;
 
-public class GameSelection {
+public class GameSelectionController {
 
     @FXML
     Button logout;

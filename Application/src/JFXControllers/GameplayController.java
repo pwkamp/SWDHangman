@@ -1,4 +1,4 @@
-package controllers;
+package JFXControllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,130 +15,22 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 //TODO: Everything
-public class GameMain {
+public class GameplayController {
 
     @FXML
     private Text roundText;
-
     @FXML
     private Text usernameText;
-
     @FXML
     private Text coinsText;
-
     @FXML
     private Text playersText;
-
     @FXML
-    private Text player1Text;
-
+    private Text player1Text, player2Text, player3Text, player4Text, player5Text, player6Text, player7Text, player8Text, player9Text, player10Text;
     @FXML
-    private Text player2Text;
-
-    @FXML
-    private Text player3Text;
-
-    @FXML
-    private Text player4Text;
-
-    @FXML
-    private Text player5Text;
-
-    @FXML
-    private Text player6Text;
-
-    @FXML
-    private Text player7Text;
-
-    @FXML
-    private Text player8Text;
-
-    @FXML
-    private Text player9Text;
-
-    @FXML
-    private Text player10Text;
-
+    private Button aButton, bButton, cButton, dButton, eButton, fButton, gButton, hButton, iButton, jButton, kButton, lButton, mButton, nButton, oButton, pButton, qButton, rButton, sButton, tButton, uButton, vButton, wButton, xButton, yButton, zButton;
     @FXML
     private ImageView hangmanImageView;
-
-    @FXML
-    private Button aButton;
-
-    @FXML
-    private Button bButton;
-
-    @FXML
-    private Button cButton;
-
-    @FXML
-    private Button dButton;
-
-    @FXML
-    private Button eButton;
-
-    @FXML
-    private Button fButton;
-
-    @FXML
-    private Button gButton;
-
-    @FXML
-    private Button hButton;
-
-    @FXML
-    private Button iButton;
-
-    @FXML
-    private Button jButton;
-
-    @FXML
-    private Button kButton;
-
-    @FXML
-    private Button lButton;
-
-    @FXML
-    private Button mButton;
-
-    @FXML
-    private Button nButton;
-
-    @FXML
-    private Button oButton;
-
-    @FXML
-    private Button pButton;
-
-    @FXML
-    private Button qButton;
-
-    @FXML
-    private Button rButton;
-
-    @FXML
-    private Button sButton;
-
-    @FXML
-    private Button tButton;
-
-    @FXML
-    private Button uButton;
-
-    @FXML
-    private Button vButton;
-
-    @FXML
-    private Button wButton;
-
-    @FXML
-    private Button xButton;
-
-    @FXML
-    private Button yButton;
-
-    @FXML
-    private Button zButton;
 
     @FXML
     private Button leaveGameButton;

@@ -34,6 +34,7 @@ public class ClientHandler implements Runnable {
 
     @Override
     public void run() {
+
         loginClient();
 
         joinGame();
@@ -98,6 +99,7 @@ public class ClientHandler implements Runnable {
                     sendMessage("success");
                     return;
                 }
+
                 sendMessage("User already exists.");
                 continue;
             }
