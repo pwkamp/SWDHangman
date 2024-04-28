@@ -12,9 +12,11 @@ import javafx.stage.Stage;
 
 import java.util.Objects;
 
+import utils.Client;
 import utils.Debugger;
 
 public class GameSelection {
+    private Client client = Client.getInstance();
 
     @FXML
     Button logout;
@@ -37,15 +39,18 @@ public class GameSelection {
     @FXML
     public void initialize() {
         Debugger.debug("Game Selection Initialized");
-        logout.setOnAction(actionEvent -> logoutClicked());
+
         setUsername();
         setCoins();
 
+        logout.setOnAction(actionEvent -> logoutClicked());
         joinGame.setOnAction(actionEvent -> joinGameClicked());
-        createGame.setOnAction(actionEvent -> createGame());
+        createGame.setOnAction(actionEvent -> createGameClicked());
+
     }
 
     private void logoutClicked() {
+        System.exit(0);
         try {
             //TODO: Add any needed functionality to logout that does not involve JavaFX scene switching back to the Main Menu
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/scenes/MainMenu.fxml")));
@@ -64,9 +69,18 @@ public class GameSelection {
         //TODO: Check if the game code is valid from the server
         if (validateGameCode()) {
             Debugger.debug("Game Code is valid");
+            client.sendData("JOIN " + gameCode.getText());
+            client.awaitMessage();
+            if (client.getMessage().equals("JOIN success")) {
+                joinGame();
+                return;
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Invalid Game Code");
+                alert.setHeaderText("Game does not exist");
+                alert.showAndWait();
+            }
         }
-
-        joinGame();
     }
 
     private boolean validateGameCode() {
@@ -97,7 +111,24 @@ public class GameSelection {
     }
 
 
-    private void createGame() {
+    private void createGameClicked() {
+        Debugger.debug("Create Game Clicked");
+        client.sendData("CREATEGAME");
+        client.awaitMessage();
+        String message = client.getMessage();
+        if (message.contains("CREATEGAME success")) {
+            createGame(message);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Creating Game");
+            alert.setHeaderText("Error creating game");
+            alert.showAndWait();
+        }
+    }
+    private void createGame(String message) {
+        String gameCode = client.getMessage().split(" ")[2];
+        Debugger.debug("Game Code: " + gameCode);
+        client.setGameCode(gameCode);
         try {
             //TODO: Add any needed functionality to logout that does not involve JavaFX scene switching back to the Main Menu
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/scenes/GameLeader.fxml")));
@@ -113,9 +144,13 @@ public class GameSelection {
 
     private void setCoins() {
         //TODO: Get the user's coins from the server and set the text to the number of coins
+        client.sendData("COINS " + client.getUsername());
+        client.awaitMessage();
+        coins.setText(client.getMessage().split(" ")[1]);
     }
 
     private void setUsername() {
         //TODO: Get the user's username from the server and set the text to the username
+        username.setText(client.getUsername());
     }
 }

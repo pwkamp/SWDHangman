@@ -14,6 +14,8 @@ public class ClientHandler implements Runnable {
     private GameHandler gameHandler;
     String state;
 
+    private String message = "";
+
 
     public ClientHandler(Socket socket, DBConnection dbConnection, Server parentServer) {
         dbConnection.log("Client connected: " + socket.getInetAddress() + ":" + socket.getPort());
@@ -36,9 +38,27 @@ public class ClientHandler implements Runnable {
     public void run() {
         loginClient();
 
+        setUpSelectionPage();
+
         joinGame();
 
         awaitGameHandler();
+    }
+
+    private void setUpSelectionPage() {
+        while (true) {
+            String messageText = receiveMessage();
+            String[] message = new String[0];
+            if (messageText != null) {
+                message = messageText.split(" ");
+            }
+
+            if (message[0].equals("COINS")) {
+                sendMessage("COINS " + dbConnection.getUserCoins(message[1]));
+                return;
+            }
+        }
+
     }
 
     private void joinGame() {
@@ -52,35 +72,35 @@ public class ClientHandler implements Runnable {
             // join game
             if (message[0].equals("JOIN")) {
                 if (message.length != 2) {
-                    sendMessage("Invalid request");
+                    sendMessage("INVALID");
                     continue;
                 }
 
-                if (!parentServer.gameExists(message[1])) {
-                    sendMessage("Game does not exist");
+                if (!parentServer.gameExistsActive(message[1])) {
+                    sendMessage("JOIN fail");
                     continue;
                 }
 
                 parentServer.joinGame(this, message[1]);
-                sendMessage("success");
                 return;
             }
 
             // create game
-            if (message[0].equals("CREATE")) {
+            if (message[0].equals("CREATEGAME")) {
                 if (message.length != 1) {
-                    sendMessage("Invalid request");
+                    sendMessage("INVALID");
                     continue;
                 }
 
-                parentServer.createGame(this);
-                sendMessage("success");
-                return;
+                if (parentServer.createGame(this)) {
+                    return;
+                }
+                continue;
             }
 
 
             // Valid message results in early return. Reaching this point means something went wrong
-            sendMessage("Invalid request");
+            sendMessage("INVALID");
         }
     }
 
@@ -129,7 +149,7 @@ public class ClientHandler implements Runnable {
     }
 
     private String receiveMessage() {
-        String message = null;
+        message = "";
         try {
             message = (String) inputStream.readObject();
         } catch (IOException | ClassNotFoundException e) {
@@ -138,7 +158,7 @@ public class ClientHandler implements Runnable {
         return message;
     }
 
-    private void sendMessage(String message) {
+    public void sendMessage(String message) {
         try {
             outputStream.writeObject(message);
         } catch (IOException e) {
@@ -160,7 +180,25 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    private void setGameHandler(GameHandler gameHandler) {
+    public void setGameHandler(GameHandler gameHandler) {
         this.gameHandler = gameHandler;
+    }
+
+    public Socket getSocket() {
+        return socket;
+    }
+
+    public void awaitMessage() {
+        message = "";
+        while (message.equals("")) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+    }
+    public String getMessage() {
+        return message;
     }
 }

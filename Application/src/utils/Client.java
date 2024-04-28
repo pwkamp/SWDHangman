@@ -21,7 +21,14 @@ public final class Client implements Runnable {
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
     private String message = "";
+
     private final int port;
+
+    private String gameCode;
+    private String username;
+    private String password;
+    private String coins;
+
 
     /**
      * Constructs a new client with the specified host and port.
@@ -140,4 +147,30 @@ public final class Client implements Runnable {
         }
     }
 
+    public void setGameCode(String gameCode) {
+        this.gameCode = gameCode;
+    }
+
+    public String getGameCode() {
+        return gameCode;
+    }
+
+    public void sendInfo() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("INFO ");
+        sb.append(username);
+        sb.append(" ");
+        sb.append(coins);
+        sb.append(" ");
+        sb.append(gameCode);
+        sendData(sb.toString());
+    }
+
+    public void setUsername(String text) {
+        this.username = text;
+    }
+
+    public String getUsername() {
+        return username;
+    }
 }
