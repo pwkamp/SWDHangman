@@ -15,7 +15,7 @@ import java.util.Objects;
 import utils.Client;
 import utils.Debugger;
 
-public class GameSelection {
+public class GameSelectionController {
     private Client client = Client.getInstance();
 
     @FXML
@@ -70,9 +70,8 @@ public class GameSelection {
         if (validateGameCode()) {
             Debugger.debug("Game Code is valid");
             client.sendData("JOIN " + gameCode.getText() + " " + client.getUsername());
-            client.awaitMessage();
-            String message = client.getMessage();
-            if (message.contains("JOIN success")) {
+            String message = client.awaitMessage();
+            if (message.contains("success")) {
                 Debugger.debug("Joining game");
                 joinGame();
             } else {
@@ -87,11 +86,9 @@ public class GameSelection {
     private void createGameClicked() {
         Debugger.debug("Create Game Clicked");
         client.sendData("CREATEGAME");
-        client.awaitMessage();
-        String message = client.getMessage();
-        String[] wordOptions = message.split(" ");
-        if (message.contains("CREATEGAME success")) {
-            createGame(message, new String[]{wordOptions[3], wordOptions[4], wordOptions[5]});
+        String message = client.awaitMessage();
+        if (message.equals("success")) {
+            createGame();
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Creating Game");
@@ -127,8 +124,11 @@ public class GameSelection {
         }
     }
 
-    private void createGame(String message, String[] wordOptions) {
-        String gameCode = client.getMessage().split(" ")[2];
+    private void createGame() {
+        String[] message = client.awaitMessage().split(" ");
+        String gameCode = message[0];
+        String[] wordOptions = {message[1], message[2], message[3]};
+
         Debugger.debug("Game Code: " + gameCode);
         client.setGameCode(gameCode);
         client.setWordOptions(wordOptions);
@@ -148,8 +148,7 @@ public class GameSelection {
     private void setCoins() {
         //TODO: Get the user's coins from the server and set the text to the number of coins
         client.sendData("COINS " + client.getUsername());
-        client.awaitMessage();
-        coins.setText(client.getMessage().split(" ")[1]);
+        coins.setText(client.awaitMessage().split(" ")[1]);
     }
 
     private void setUsername() {

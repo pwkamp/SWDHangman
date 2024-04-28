@@ -28,7 +28,7 @@ public class ApplicationDriver extends Application {
      */
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("scenes/MainMenu.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("scenes/ServerSelect.fxml")));
 
         Scene scene = new Scene(root); // attach scene graph to scene
         stage.setTitle("Hangman"); // displayed in window's title bar
@@ -36,7 +36,6 @@ public class ApplicationDriver extends Application {
         stage.show(); // display the stage
 
         ExecutorService executorService = Executors.newCachedThreadPool();
-        Client client = new Client("localhost", 8080);
         executorService.execute(Client.getInstance());
     }
 

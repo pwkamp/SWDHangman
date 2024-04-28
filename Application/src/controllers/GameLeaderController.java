@@ -20,7 +20,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 //TODO: Everything
-public class GameLeader {
+public class GameLeaderController {
     private Client client = Client.getInstance();
 
     @FXML
@@ -48,102 +48,11 @@ public class GameLeader {
     private Text player4Text = new Text();
 
     @FXML
-    private Text player5Text= new Text();
-    @FXML
-    private Text player6Text= new Text();
-
-    @FXML
-    private Text player7Text= new Text();
-
-    @FXML
-    private Text player8Text= new Text();
-
-    @FXML
-    private Text player9Text= new Text();
-
-    @FXML
-    private Text player10Text= new Text();
-
-    @FXML
     private ImageView hangmanImageView;
 
     @FXML
-    private Button aButton;
+    private Button aButton, bButton, cButton, dButton, eButton, fButton, gButton, hButton, iButton, jButton, kButton, lButton, mButton, nButton, oButton, pButton, qButton, rButton, sButton, tButton, uButton, vButton, wButton, xButton, yButton, zButton;
 
-    @FXML
-    private Button bButton;
-
-    @FXML
-    private Button cButton;
-
-    @FXML
-    private Button dButton;
-
-    @FXML
-    private Button eButton;
-
-    @FXML
-    private Button fButton;
-
-    @FXML
-    private Button gButton;
-
-    @FXML
-    private Button hButton;
-
-    @FXML
-    private Button iButton;
-
-    @FXML
-    private Button jButton;
-
-    @FXML
-    private Button kButton;
-
-    @FXML
-    private Button lButton;
-
-    @FXML
-    private Button mButton;
-
-    @FXML
-    private Button nButton;
-
-    @FXML
-    private Button oButton;
-
-    @FXML
-    private Button pButton;
-
-    @FXML
-    private Button qButton;
-
-    @FXML
-    private Button rButton;
-
-    @FXML
-    private Button sButton;
-
-    @FXML
-    private Button tButton;
-
-    @FXML
-    private Button uButton;
-
-    @FXML
-    private Button vButton;
-
-    @FXML
-    private Button wButton;
-
-    @FXML
-    private Button xButton;
-
-    @FXML
-    private Button yButton;
-
-    @FXML
-    private Button zButton;
 
     @FXML
     private Button leaveGameButton;
@@ -299,12 +208,6 @@ public class GameLeader {
         players.add(player2Text);
         players.add(player3Text);
         players.add(player4Text);
-        players.add(player5Text);
-        players.add(player6Text);
-        players.add(player7Text);
-        players.add(player8Text);
-        players.add(player9Text);
-        players.add(player10Text);
     }
 
 

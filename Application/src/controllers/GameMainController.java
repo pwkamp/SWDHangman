@@ -10,7 +10,6 @@ import javafx.scene.text.Text;
 
 import javafx.stage.Stage;
 import utils.Client;
-import utils.Debugger;
 import utils.Game;
 import utils.LetterEvent;
 
@@ -20,7 +19,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 //TODO: Everything
-public class GameMain {
+public class GameMainController {
     Client client = Client.getInstance();
 
     @FXML

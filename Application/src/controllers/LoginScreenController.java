@@ -15,7 +15,7 @@ import java.util.Objects;
 import utils.Client;
 import utils.Debugger;
 
-public class Login {
+public class LoginScreenController {
 
     Client client = Client.getInstance();
 
@@ -54,16 +54,16 @@ public class Login {
         Debugger.debug("Login Clicked");
 
         client.sendData("LOGIN " + username.getText() + " " + password.getText());
-        client.awaitMessage();
-        String message = client.getMessage();
-        if (message.equals("LOGIN success")) {
+        String message = client.awaitMessage();
+        System.out.println(message);
+        if (message.equals("success")) {
             Debugger.debug("Login success");
             loginSuccess();
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Login Failed");
-            alert.setContentText("Invalid username or password");
+            alert.setContentText(message);
             alert.showAndWait();
         }
     }

@@ -5,7 +5,6 @@ public class ServerDriver {
     //TODO: Implement Server Functionality
     public static void main(String[] args) {
 
-
         DBConnection dbConnection = new DBConnection(DBConnection.TEST_DATABASE_URL, "root", "");
 
         // Example on how to use DBConnection class

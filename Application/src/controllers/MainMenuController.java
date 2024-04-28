@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 
 import java.util.Objects;
 
-public class MainMenu {
+public class MainMenuController {
 
     @FXML
     private Button login;

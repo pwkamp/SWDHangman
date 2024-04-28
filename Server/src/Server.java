@@ -48,13 +48,12 @@ public class Server {
         // create a new game
         GameHandler gameHandler = new GameHandler(client, dbConnection);
         client.setGameHandler(gameHandler);
-        String[] wordOptions = new String[]{words.getRandomWord(), words.getRandomWord(), words.getRandomWord()};
-        gameHandler.setWordOptions(wordOptions);
-        client.sendMessage("CREATEGAME " + "success " + gameHandler.getJoinCode() + " " + wordOptions[0] + " " + wordOptions[1] + " " + wordOptions[2]);
         games.add(gameHandler);
+        gameHandler.createGame();
         executorService.execute(gameHandler);
         return true;
     }
+
     public void joinGame(ClientHandler client, String code, String name){
         // join an existing game
         for (GameHandler game : games) {
@@ -68,6 +67,7 @@ public class Server {
         }
         client.sendMessage("JOIN fail");
     }
+
     public boolean gameExistsActive(String code){
         for (GameHandler game : games) {
             if (game.getJoinCode().equals(code)) {

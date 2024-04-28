@@ -16,7 +16,7 @@ public class GameHandler implements Runnable{
     String currentlyRevealedWord = "";
     private String[] wordOptions;
 
-    public GameHandler(ClientHandler leader, DBConnection dbConnection){
+    public GameHandler(ClientHandler leader, DBConnection dbConnection) {
         this.leader = leader;
         clients.add(leader);
         this.dbConnection = dbConnection;
@@ -114,15 +114,9 @@ public class GameHandler implements Runnable{
                     System.out.println(joinCode + ": " + client.getUsername() + " guessed incorrectly");
                     messageClients("INCORRECTLETTER " + messageArray[1]);
                 }
-
             }
         }
     }
-
-    public String getJoinCode(){
-        return joinCode;
-    }
-
 
     public void addClient(ClientHandler client) {
         clients.add(client);
@@ -139,8 +133,22 @@ public class GameHandler implements Runnable{
         }
     }
 
+    public void createGame() {
+        Words words = new Words("res/SWD_words.csv");
+        String[] wordOptions = new String[]{words.getRandomWord(), words.getRandomWord(), words.getRandomWord()};
+        setWordOptions(wordOptions);
+    }
+
+    /////////////////// SETTERS ///////////////////
+
     public void setWordOptions(String[] wordOptions) {
         this.wordOptions = wordOptions;
+    }
+
+     /////////////////// GETTERS ///////////////////
+
+    public String getJoinCode(){
+        return joinCode;
     }
 
     public String[] getWordOptions() {

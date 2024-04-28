@@ -48,8 +48,7 @@ public class Game implements Runnable {
         //client.sendData("WAITING");
         //players.get(0).setText(client.getUsername());
         while (true) {
-            client.awaitMessage();
-            String message = client.getMessage();
+            String message = client.awaitMessage();
             String[] messageArray = message.split(" ");
             if (messageArray[0].equals("START")) {
                 wordLength = Integer.parseInt(messageArray[1]);
@@ -76,8 +75,7 @@ public class Game implements Runnable {
 
     private void gameLoop() {
         while (true) {
-            client.awaitMessage();
-            String message = client.getMessage();
+            String message = client.awaitMessage();
             String[] messageArray = message.split(" ");
             if (messageArray[0].equals("YOURTURN")) {
                 Debugger.debug("My Turn");

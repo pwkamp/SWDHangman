@@ -8,7 +8,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
+
+// 23535
 
 /**
  * The utils.Client class represents the client in the networked application.
@@ -18,20 +21,16 @@ import java.util.ArrayList;
  */
 public final class Client implements Runnable {
 
-    private final static Client INSTANCE = new Client("localhost", 8080);
-    private final String chatServer;
+    private static final Client INSTANCE = new Client();
     private Socket client;
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
-    private String message = "";
 
-    private final int port;
-
-    private String gameCode;
-    private String username;
-    private String password;
-    private String coins;
-    private String[] wordOptions;
+    private static String gameCode;
+    private static String username;
+    private static String password;
+    private static String coins;
+    private static String[] wordOptions;
 
 
     /**
@@ -45,8 +44,16 @@ public final class Client implements Runnable {
         this.port = port;
     }
 
-    public static Client getInstance() {
-        return INSTANCE;
+    public void connect(String ip, int port) throws IOException {
+        displayMessage("Attempting to Connect");
+        client = new Socket(InetAddress.getByName(ip), port);
+        displayMessage("\nConnected to: " + client.getInetAddress().getHostName());
+
+        outputStream = new ObjectOutputStream(client.getOutputStream());
+        outputStream.flush();
+
+        inputStream = new ObjectInputStream(client.getInputStream());
+        displayMessage("\nI/O streams created");
     }
 
     /**
@@ -75,24 +82,6 @@ public final class Client implements Runnable {
         } finally {
             closeConnection();
         }
-    }
-
-    /**
-     * Processes the connection by reading messages from the input stream until the server sends a termination message.
-     * @throws IOException if an I/O error occurs when reading from the input stream
-     * @author Peter Kamp
-     */
-    private void processConnection() throws IOException {
-
-        do {
-            try {
-                message = (String) inputStream.readObject();
-                System.out.println(message);
-                displayMessage(message);
-            } catch (ClassNotFoundException classNotFoundException) {
-                displayMessage("\nUnknown object.");
-            }
-        } while (!message.equals("\nSERVER ► TERMINATE"));
     }
 
     /**
@@ -135,20 +124,17 @@ public final class Client implements Runnable {
         System.out.println(message);
     }
 
-    public String getMessage() {
-        Debugger.debug("Message from Server: " + message);
-        return message;
-    }
-
-    public void awaitMessage() {
-        message = "";
-        while (message.equals("")) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+    public String awaitMessage() {
+        String message = null;
+        try {
+            message = (String) inputStream.readObject();
+        } catch (ClassNotFoundException classNotFoundException) {
+            displayMessage("\nUnknown object type received");
+        } catch (IOException ioException) {
+            displayMessage("\nError reading object");
         }
+
+        return message;
     }
 
     public void setGameCode(String gameCode) {

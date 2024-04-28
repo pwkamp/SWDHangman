@@ -56,6 +56,8 @@ public class ClientHandler implements Runnable {
     }
 
     private void runGame() {
+        String[] wordOptions = gameHandler.getWordOptions();
+        sendMessage(gameHandler.getJoinCode() + " " + wordOptions[0] + " " + wordOptions[1] + " " + wordOptions[2]);
     }
 
     /**
@@ -76,11 +78,7 @@ public class ClientHandler implements Runnable {
 
     private void loginClient() {
         while (true) {
-            String messageText = receiveMessage();
-            String[] message = new String[0];
-            if (messageText != null) {
-                message = messageText.split(" ");
-            }
+            String[] message = receiveMessage().split(" ");
 
             // invalid message length
             if (message.length != 3) {
@@ -103,6 +101,7 @@ public class ClientHandler implements Runnable {
 
             // login
             if (message[0].equals("LOGIN")) {
+                System.out.println("Attempting to login");
                 if (!dbConnection.validateUser(message[1], message[2])) {
                     dbConnection.log("Failed login attempt: " + message[1]);
                     sendMessage("Username or password incorrect");
@@ -121,11 +120,8 @@ public class ClientHandler implements Runnable {
 
     private void joinGame() {
         while (true) {
-            String messageText = receiveMessage();
-            String[] message = new String[0];
-            if (messageText != null) {
-                message = messageText.split(" ");
-            }
+            System.out.println("Waiting for game request");
+            String[] message = receiveMessage().split(" ");
 
             // join game
             if (message[0].equals("JOIN")) {
@@ -146,14 +142,18 @@ public class ClientHandler implements Runnable {
 
             // create game
             if (message[0].equals("CREATEGAME")) {
+                System.out.println("Creating game");
                 if (message.length != 1) {
                     sendMessage("Invalid request");
                     continue;
                 }
 
                 if (parentServer.createGame(this)) {
+                    sendMessage("success");
                     return;
                 }
+
+                sendMessage("Error creating game");
                 continue;
             }
 
@@ -207,7 +207,7 @@ public class ClientHandler implements Runnable {
         message = "";
         while (message.equals("")) {
             try {
-                Thread.sleep(100);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
