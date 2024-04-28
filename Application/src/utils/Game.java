@@ -92,7 +92,7 @@ public class Game implements Runnable {
                 int index = alphabet.indexOf(messageArray[1]);
                 letters.get(index).setTextFill(Color.GREEN);
                 letters.get(index).setDisable(true);
-                String formattedRevealedWord = messageArray[3].replace("", " ").trim();
+                String formattedRevealedWord = messageArray[2].replace("", " ").trim();
                 revealedWord.setText(formattedRevealedWord);
 
                 for (Button letter : letters) {

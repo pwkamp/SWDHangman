@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JFXControllers.ServerSelectController">
+   <children>
+      <TextField layoutX="215.0" layoutY="141.0" />
+      <Button layoutX="264.0" layoutY="176.0" mnemonicParsing="false" text="Connect" />
+      <Label alignment="CENTER" layoutY="26.0" prefHeight="100.0" text="Hangman" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0">
+         <font>
+            <Font name="DejaVu Sans Bold" size="59.0" />
+         </font></Label>
+      <Label layoutX="216.0" layoutY="119.0" prefHeight="25.0" prefWidth="171.0" text="Enter server IP address:" />
+   </children>
+</AnchorPane>
