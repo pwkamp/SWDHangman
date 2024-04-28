@@ -61,7 +61,18 @@ public class DBConnection {
     }
 
     public void createLogTable() {
-        String query = "CREATE TABLE IF NOT EXISTS logs (log_id INT AUTO_INCREMENT PRIMARY KEY, log_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP, log_message VARCHAR(255))";
+        String query = "CREATE TABLE IF NOT EXISTS logs (log_id INT AUTO_INCREMENT PRIMARY KEY, log_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP, log_message VARCHAR(255), stack_trace TEXT DEFAULT NULL)";
+        try {
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void log(String message, String stackTrace) {
+
+        String query = "INSERT INTO logs (log_message, stack_trace) VALUES ('" + message + "', '" + stackTrace + "')";
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate(query);
@@ -71,14 +82,7 @@ public class DBConnection {
     }
 
     public void log(String message) {
-
-        String query = "INSERT INTO logs (log_message) VALUES ('" + message + "')";
-        try {
-            Statement statement = connection.createStatement();
-            statement.executeUpdate(query);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        log(message, "");
     }
 
     public boolean userExists(String user) {
@@ -86,6 +90,18 @@ public class DBConnection {
         try {
             Statement statement = connection.createStatement();
             ResultSet set = statement.executeQuery("SELECT * FROM users WHERE username = '" + user + "';");
+            return set.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean validateUser(String user, String pass) {
+        user = user.toLowerCase();
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet set = statement.executeQuery("SELECT * FROM users WHERE username = '" + user + "' AND password = '" + pass + "';");
             return set.next();
         } catch (SQLException e) {
             e.printStackTrace();
