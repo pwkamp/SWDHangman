@@ -15,6 +15,8 @@ import java.util.Objects;
 
 public class ServerSelectController {
 
+    Client client = Client.getInstance();
+
     @FXML
     TextField ipBox;
 
@@ -22,7 +24,7 @@ public class ServerSelectController {
     Button connectButton;
 
     public void initialize() {
-
+        connectButton.setOnAction(event -> connectClicked());
     }
 
     public void connectClicked() {

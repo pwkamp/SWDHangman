@@ -38,7 +38,7 @@ public class ServerDriver {
         }
 
         Server connectionListener = new Server(dbConnection);
-        connectionListener.startServer(8080);
+        connectionListener.startServer(23535);
 
 
     }

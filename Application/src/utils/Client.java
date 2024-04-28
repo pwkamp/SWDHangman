@@ -35,13 +35,13 @@ public final class Client implements Runnable {
 
     /**
      * Constructs a new client with the specified host and port.
-     * @param host the IP address of the server
-     * @param port the port of the server
      * @author Peter Kamp
      */
-    public Client(String host, int port) {
-        chatServer = host;
-        this.port = port;
+    public Client() {
+    }
+
+    public static Client getInstance() {
+        return INSTANCE;
     }
 
     public void connect(String ip, int port) throws IOException {
@@ -63,25 +63,6 @@ public final class Client implements Runnable {
      * @author Peter Kamp
      */
     public void run() {
-        try {
-            displayMessage("Attempting to Connect");
-            client = new Socket(InetAddress.getByName(chatServer), port);
-            displayMessage("\nConnected to: " + client.getInetAddress().getHostName());
-
-            outputStream = new ObjectOutputStream(client.getOutputStream());
-            outputStream.flush();
-
-            inputStream = new ObjectInputStream(client.getInputStream());
-            displayMessage("\nI/O streams created");
-
-            processConnection();
-        } catch (EOFException eofException) {
-            displayMessage("\nConnection Terminated");
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
-        } finally {
-            closeConnection();
-        }
     }
 
     /**
