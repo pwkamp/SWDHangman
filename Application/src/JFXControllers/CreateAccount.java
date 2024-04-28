@@ -2,6 +2,7 @@ package JFXControllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -10,12 +11,17 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import java.net.URL;
 import java.util.Objects;
+import java.util.ResourceBundle;
 
+import utils.Client;
 import utils.Debugger;
 
 
 public class CreateAccount {
+
+    private Client client = Client.getInstance();
 
     @FXML
     Button back;
@@ -51,9 +57,27 @@ public class CreateAccount {
     }
 
     private void createAccountClicked() {
-        Debugger.debug("Create Account Clicked");
         if (validatePassword() && validateUsername()) {
             //TODO: Implement create account server functionality including checking if the username is taken already
+            Debugger.debug("Creating account");
+            client.sendData("CREATE " + username.getText() + " " + password1.getText());
+//            while (!client.getMessage().equals("CREATE success") || !client.getMessage().equals("CREATE fail")) {
+//            }
+            client.awaitMessage();
+            if (client.getMessage().equals("CREATE success")) {
+                Debugger.debug("Account created");
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Success");
+                alert.setHeaderText("Account created");
+                alert.showAndWait();
+                backClicked();
+            } else {
+                Debugger.debug("Account not created");
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Account not created");
+                alert.showAndWait();
+            }
         }
     }
 
@@ -92,5 +116,4 @@ public class CreateAccount {
             return false;
         }
     }
-
 }

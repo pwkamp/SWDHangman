@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -11,9 +12,12 @@ import javafx.stage.Stage;
 
 import java.util.Objects;
 
+import utils.Client;
 import utils.Debugger;
 
 public class LoginScreenController {
+
+    private Client client = Client.getInstance();
 
     @FXML
     Button back;
@@ -49,11 +53,23 @@ public class LoginScreenController {
         //TODO: Implement login functionality and checks to make sure UN and PW are valid and match Database
         Debugger.debug("Login Clicked");
 
-        //For Testing Purposes
-        loginSuccess();
+        client.sendData("LOGIN " + username.getText() + " " + password.getText());
+        client.awaitMessage();
+        String message = client.getMessage();
+        if (message.equals("LOGIN success")) {
+            Debugger.debug("Login success");
+            loginSuccess();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Login Failed");
+            alert.setContentText("Invalid username or password");
+            alert.showAndWait();
+        }
     }
 
     private void loginSuccess() {
+        client.setUsername(username.getText());
         try {
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/scenes/GameSelection.fxml")));
             // Get the current window
