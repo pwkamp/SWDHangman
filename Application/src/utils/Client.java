@@ -124,4 +124,20 @@ public final class Client implements Runnable {
         System.out.println(message);
     }
 
+    public String getMessage() {
+        Debugger.debug("Message from Server: " + message);
+        return message;
+    }
+
+    public void awaitMessage() {
+        message = "";
+        while (message.equals("")) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }

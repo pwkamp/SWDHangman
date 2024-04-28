@@ -57,10 +57,27 @@ public class CreateAccount {
     }
 
     private void createAccountClicked() {
-        Debugger.debug("Create Account Clicked");
         if (validatePassword() && validateUsername()) {
             //TODO: Implement create account server functionality including checking if the username is taken already
+            Debugger.debug("Creating account");
             client.sendData("CREATE " + username.getText() + " " + password1.getText());
+//            while (!client.getMessage().equals("CREATE success") || !client.getMessage().equals("CREATE fail")) {
+//            }
+            client.awaitMessage();
+            if (client.getMessage().equals("CREATE success")) {
+                Debugger.debug("Account created");
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Success");
+                alert.setHeaderText("Account created");
+                alert.showAndWait();
+                backClicked();
+            } else {
+                Debugger.debug("Account not created");
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Account not created");
+                alert.showAndWait();
+            }
         }
     }
 

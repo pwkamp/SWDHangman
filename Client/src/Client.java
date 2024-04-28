@@ -80,7 +80,7 @@ public final class Client implements Runnable {
             } catch (ClassNotFoundException classNotFoundException) {
                 displayMessage("\nUnknown object.");
             }
-        } while (!message.equals("\nSERVER ► TERMINATE"));
+        } while (!message.equals("\nTERMINATE"));
     }
 
     /**
@@ -122,5 +122,7 @@ public final class Client implements Runnable {
     private void displayMessage(final String message) {
         System.out.println(message);
     }
+
+
 
 }
