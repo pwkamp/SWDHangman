@@ -128,7 +128,7 @@ public class Game implements Runnable {
                     imageView.setImage(new javafx.scene.image.Image("res/" + stage + ".png"));
                 }
             } else if (message[0].equals("INCORRECTWORD")) {
-                if (client.getUsername().equals(message[1])) {
+                if (client.getUser().getUsername().equals(message[1])) {
                     Debugger.debug("You lose this round");
                     for (Button letter : letters) {
                         letter.setDisable(true);

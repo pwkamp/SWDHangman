@@ -16,6 +16,8 @@ public class ClientHandler implements Runnable {
     private GameHandler gameHandler;
     private User user;
 
+    private User user;
+
     private boolean lostRound = false;
     private String message = "";
 
@@ -229,5 +231,9 @@ public class ClientHandler implements Runnable {
     }
     public boolean hasLostRound() {
         return lostRound;
+    }
+
+    public User getUser() {
+        return user;
     }
 }
