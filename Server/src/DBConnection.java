@@ -9,7 +9,7 @@ import java.util.Random;
 //TODO: Add more database connection functionality
 //If errors, see: https://www.javatpoint.com/no-suitable-driver-found-for-jdbc
 public class DBConnection {
-    public static String TEST_DATABASE_URL = "jdbc:mysql://localhost/team1";
+    public static String TEST_DATABASE_URL = "jdbc:mysql://s-l112.engr.uiowa.edu:3306/swd_db001?useSSL=false";
 
     private Connection connection;
 

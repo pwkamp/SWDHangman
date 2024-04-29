@@ -93,7 +93,7 @@ public class Server {
 
   public static void main(String[] args) {
 
-    DBConnection dbConnection = new DBConnection(DBConnection.TEST_DATABASE_URL, "root", "");
+    DBConnection dbConnection = new DBConnection(DBConnection.TEST_DATABASE_URL, "swd_group001", "swd_group001-xyz-24");
 
     try {
       dbConnection.connect();
