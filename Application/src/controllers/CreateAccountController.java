@@ -63,11 +63,7 @@ public class CreateAccountController {
             String message = client.awaitMessage();
             if (message.equals("success")) {
                 Debugger.debug("Account created");
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Success");
-                alert.setHeaderText("Account created");
-                alert.showAndWait();
-                backClicked();
+                loginSuccess();
             } else {
                 Debugger.debug("Account not created");
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -75,6 +71,18 @@ public class CreateAccountController {
                 alert.setHeaderText(message);
                 alert.showAndWait();
             }
+        }
+    }
+
+    private void loginSuccess() {
+        try {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/scenes/GameSelection.fxml")));
+            // Get the current window
+            Stage currentStage = (Stage) back.getScene().getWindow();
+            currentStage.setScene(new Scene(root));
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println(e.getMessage());
         }
     }
 

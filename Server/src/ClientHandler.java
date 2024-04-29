@@ -197,7 +197,7 @@ public class ClientHandler implements Runnable {
     }
 
     public String awaitMessage() {
-        String message = null;
+        String message = "";
         try {
             message = (String) inputStream.readObject();
         } catch (Exception e) {
