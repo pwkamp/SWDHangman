@@ -203,15 +203,16 @@ public class ClientHandler implements Runnable {
         return socket;
     }
 
-    public void awaitMessage() {
-        message = "";
-        while (message.equals("")) {
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
+    public String awaitMessage() {
+        String message = null;
+        try {
+            message = (String) inputStream.readObject();
+        } catch (Exception e) {
+            dbConnection.log("Error reading object");
+            System.out.println("Error reading object");
         }
+
+        return message;
     }
     public String getMessage() {
         return message;

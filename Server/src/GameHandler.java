@@ -38,22 +38,20 @@ public class GameHandler implements Runnable{
         dbConnection.log(joinCode + ": Awaiting players");
 
         while (true) {
-            String message;
-            leader.awaitMessage();
-            message = leader.getMessage();
-            if (message.equals("START")) {
+            String[] message = leader.awaitMessage().split(" ");
+            if (message[0].equals("START")) {
                 dbConnection.log(joinCode + ": leader started game");
                 System.out.println(joinCode + ": leader started game");
 
                 messageClients("START " + word.length());
                 return true;
-            } else if (message.equals("ENDGAME")) {
+            } else if (message[0].equals("ENDGAME")) {
                 dbConnection.log(joinCode + ": leader ended game");
                 System.out.println(joinCode + ": leader ended game");
                 messageClients("ENDGAME");
                 return false;
-            } else if (message.split(" ")[0].equals("WORD")) {
-                word = wordOptions[Integer.parseInt(message.split(" ")[1]) - 1];
+            } else if (message[0].equals("WORD")) {
+                word = wordOptions[Integer.parseInt(message[1]) - 1];
 
                 StringBuilder wordLengthPlaceholder = new StringBuilder();
                 wordLengthPlaceholder.append("_".repeat(Math.max(0, word.length())));
@@ -63,8 +61,8 @@ public class GameHandler implements Runnable{
                 System.out.println(joinCode + ": leader set word to " + word);
                 messageClients("WORD success " + word.length());
             } else {
-                dbConnection.log(joinCode + ": Invalid message: " + message);
-                System.out.println(joinCode + ": Invalid message: " + message);
+                dbConnection.log(joinCode + ": Invalid message " + message);
+                System.out.println(joinCode + ": Invalid message " + message);
                 return false;
             }
         }
