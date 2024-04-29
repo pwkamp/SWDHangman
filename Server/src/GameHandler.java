@@ -7,6 +7,8 @@ public class GameHandler implements Runnable{
     ClientHandler leader;
     DBConnection dbConnection;
     String joinCode;
+
+    private String state = "waiting";
     String word = "";
     String currentlyRevealedWord = "";
     private String[] wordOptions;
@@ -17,8 +19,8 @@ public class GameHandler implements Runnable{
         this.dbConnection = dbConnection;
         joinCode = dbConnection.generateGameCode();
 
-        //TODO: Implement get name function
-        dbConnection.createGame("test", joinCode);
+        dbConnection.createGame(leader.getUser().getUsername(), joinCode);
+        dbConnection.joinGame(leader.getUser().getUsername(), joinCode);
         dbConnection.log("Game created with join code: " + joinCode);
     }
 
@@ -31,17 +33,26 @@ public class GameHandler implements Runnable{
     }
 
     private boolean awaitPlayers() {
+        state = "waiting";
         dbConnection.log(joinCode + ": Awaiting players");
 
         while (true) {
+            for (int i = 0; i < clients.size(); i++) {
+                messageClients("PLAYER " + i + " " + clients.get(i).getUser().getUsername());
+            }
+
             String[] message = leader.awaitMessage().split(" ");
             if (message[0].equals("START")) {
+                dbConnection.setGameState(joinCode, "active");
+                state = "active";
                 dbConnection.log(joinCode + ": leader started game");
                 System.out.println(joinCode + ": leader started game");
 
                 messageClients("START " + word.length());
                 return true;
             } else if (message[0].equals("ENDGAME")) {
+                dbConnection.setGameState(joinCode, "inactive");
+                state = "inactive";
                 dbConnection.log(joinCode + ": leader ended game");
                 System.out.println(joinCode + ": leader ended game");
                 messageClients("ENDGAME");
@@ -52,15 +63,27 @@ public class GameHandler implements Runnable{
                 StringBuilder wordLengthPlaceholder = new StringBuilder();
                 wordLengthPlaceholder.append("_".repeat(Math.max(0, word.length())));
                 currentlyRevealedWord = wordLengthPlaceholder.toString();
+                dbConnection.setGuessedData(joinCode, currentlyRevealedWord);
 
                 dbConnection.log(joinCode + ": leader set word to " + word);
                 System.out.println(joinCode + ": leader set word to " + word);
+                dbConnection.setWord(joinCode, word);
                 messageClients("WORD success " + word.length());
             } else {
                 dbConnection.log(joinCode + ": Invalid message " + message);
                 System.out.println(joinCode + ": Invalid message " + message);
                 return false;
             }
+
+            for (ClientHandler client : clients) {
+                String[] message2 = client.awaitMessage().split(" ");
+                if (message2[0].equals("LEAVEGAME")) {
+                    clients.remove(client);
+                    dbConnection.log(joinCode + ": " + client.getUser().getUsername() + " left the game");
+                    dbConnection.leaveGame(client.getUser().getUsername(), joinCode);
+                }
+            }
+
         }
     }
 
@@ -131,11 +154,7 @@ public class GameHandler implements Runnable{
 
     public void addClient(ClientHandler client) {
         clients.add(client);
-        updatePlayers();
-    }
-
-    private void updatePlayers() {
-        //dbConnection.get
+        dbConnection.joinGame(client.getUser().getUsername(), joinCode);
     }
 
     private void messageClients(String message) {
@@ -156,6 +175,10 @@ public class GameHandler implements Runnable{
         this.wordOptions = wordOptions;
     }
 
+    public void setState(String state) {
+        this.state = state;
+    }
+
      /////////////////// GETTERS ///////////////////
 
     public String getJoinCode(){
@@ -164,5 +187,9 @@ public class GameHandler implements Runnable{
 
     public String[] getWordOptions() {
         return wordOptions;
+    }
+
+    public String getState() {
+        return state;
     }
 }

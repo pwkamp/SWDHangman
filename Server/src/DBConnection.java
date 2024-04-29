@@ -44,14 +44,14 @@ public class DBConnection {
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate(
-                    "CREATE TABLE IF NOT EXISTS users (id INT AUTO_INCREMENT PRIMARY KEY, username VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, coins INT DEFAULT 30, game_earnings INT DEFAULT 0);");
+                    "CREATE TABLE IF NOT EXISTS users (id INT AUTO_INCREMENT PRIMARY KEY, username VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL);");
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     public void createGameTable() {
-        String query = "CREATE TABLE IF NOT EXISTS hangman_games (game_id INT AUTO_INCREMENT PRIMARY KEY, join_code VARCHAR(6) UNIQUE NOT NULL, game_leader VARCHAR(255) NOT NULL, game_state VARCHAR(255) DEFAULT 'waiting', word VARCHAR(255), letters_guessed VARCHAR(255), player1 VARCHAR(255), player2 VARCHAR(255), player3 VARCHAR(255), player4 VARCHAR(255), player5 VARCHAR(255), player6 VARCHAR(255), player7 VARCHAR(255), player8 VARCHAR(255), player9 VARCHAR(255))";
+        String query = "CREATE TABLE IF NOT EXISTS hangman_games (game_id INT AUTO_INCREMENT PRIMARY KEY, join_code VARCHAR(6) UNIQUE NOT NULL, game_leader VARCHAR(255) NOT NULL, game_state VARCHAR(255) DEFAULT 'waiting', word VARCHAR(255), guess_data VARCHAR(255), player1 VARCHAR(255), player2 VARCHAR(255), player3 VARCHAR(255), player4 VARCHAR(255));";
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate(query);
@@ -136,116 +136,14 @@ public class DBConnection {
             Statement statement = connection.createStatement();
             ResultSet set = statement.executeQuery("SELECT * FROM users WHERE username = '" + user + "';");
             if (set.next()) {
-                return new User(set.getString("username"), set.getString("password"), set.getInt("coins"));
+                return new User(set.getString("username"), set.getString("password"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
         // Return a blank user if the user does not exist
-        return new User("", "", -1);
-    }
-
-    // Returns false if coins not set or true if coins set
-    public boolean setUserCoins(String user, int coins) {
-        user = user.toLowerCase();
-        try {
-            Statement statement = connection.createStatement();
-            statement.executeUpdate("UPDATE users SET coins = " + coins + " WHERE username = '" + user + "';");
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    public boolean setUserCoins(User user) {
-        return setUserCoins(user.getUsername(), user.getCoins());
-    }
-
-    public boolean addUserCoins(String user, int coins) {
-        user = user.toLowerCase();
-        try {
-            Statement statement = connection.createStatement();
-            int userCoins = getUserCoins(user);
-            if (userCoins == -1) {
-                return false;
-            } else {
-                return setUserCoins(user, userCoins + coins);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    public boolean addUserCoins(User user, int coins) {
-        return addUserCoins(user.getUsername(), coins);
-    }
-
-    public int getUserCoins(String user) {
-        user = user.toLowerCase();
-        try {
-            Statement statement = connection.createStatement();
-            ResultSet set = statement.executeQuery("SELECT coins FROM users WHERE username = '" + user + "';");
-            if (set.next()) {
-                return set.getInt("coins");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return -1;
-    }
-
-    // Returns false if coins not set or true if coins set
-    public boolean setUserEarnings(String user, int coins) {
-        user = user.toLowerCase();
-        try {
-            Statement statement = connection.createStatement();
-            statement.executeUpdate("UPDATE users SET game_earnings = " + coins + " WHERE username = '" + user + "';");
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    public boolean setUserEarnings(User user) {
-        return setUserEarnings(user.getUsername(), user.getCoins());
-    }
-
-    public boolean addUserEarnings(String user, int coins) {
-        user = user.toLowerCase();
-        try {
-            Statement statement = connection.createStatement();
-            int userEarnings = getUserEarnings(user);
-            if (userEarnings == -1) {
-                return false;
-            } else {
-                return setUserEarnings(user, userEarnings + coins);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    public boolean addUserEarnings(User user, int coins) {
-        return addUserCoins(user.getUsername(), coins);
-    }
-
-    public int getUserEarnings(String user) {
-        user = user.toLowerCase();
-        try {
-            Statement statement = connection.createStatement();
-            ResultSet set = statement.executeQuery("SELECT game_earnings FROM users WHERE username = '" + user + "';");
-            if (set.next()) {
-                return set.getInt("game_earnings");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return -1;
+        return new User("", "");
     }
 
     public boolean createGame(String gameLeader, String joinCode) {
@@ -266,7 +164,7 @@ public class DBConnection {
             ResultSet set = statement.executeQuery("SELECT * FROM hangman_games WHERE join_code = '" + joinCode + "';");
             if (set.next()) {
 //                String players = set.getString("player1");
-                for (int i = 2; i <= 9; i++) {
+                for (int i = 1; i <= 4; i++) {
                     if (set.getString("player" + i) == null) {
 //                        players += ", " + player;
                         statement.executeUpdate("UPDATE hangman_games SET player" + i + " = '" + player + "' WHERE join_code = '" + joinCode + "';");
@@ -279,6 +177,65 @@ public class DBConnection {
         }
         return false;
     }
+
+    public boolean setWord(String joinCode, String word) {
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet set = statement.executeQuery("SELECT * FROM hangman_games WHERE join_code = '" + joinCode + "';");
+            if (set.next()) {
+                statement.executeUpdate("UPDATE hangman_games SET word" + " = '" + word + "' WHERE join_code = '" + joinCode + "';");
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean setGuessedData(String joinCode, String guessData) {
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet set = statement.executeQuery("SELECT * FROM hangman_games WHERE join_code = '" + joinCode + "';");
+            if (set.next()) {
+                statement.executeUpdate("UPDATE hangman_games SET guess_data" + " = '" + guessData + "' WHERE join_code = '" + joinCode + "';");
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean setGameState(String joinCode, String state) {
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet set = statement.executeQuery("SELECT * FROM hangman_games WHERE join_code = '" + joinCode + "';");
+            if (set.next()) {
+                statement.executeUpdate("UPDATE hangman_games SET game_state" + " = '" + state + "' WHERE join_code = '" + joinCode + "';");
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public void leaveGame(String username, String joinCode) {
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet set = statement.executeQuery("SELECT * FROM hangman_games WHERE join_code = '" + joinCode + "';");
+            if (set.next()) {
+                for (int i = 1; i <= 4; i++) {
+                    if (set.getString("player" + i).equals(username)) {
+                        statement.executeUpdate("UPDATE hangman_games SET player" + i + " = NULL WHERE join_code = '" + joinCode + "';");
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+    }
+}
+
 
     public String generateGameCode() {
         String characters = "abcdefghijklmnopqrstuvwxyz0123456789";
@@ -312,15 +269,4 @@ public class DBConnection {
     public Connection getConnection() {
         return connection;
     }
-
-    public ResultSet sendQuery(String query) {
-        try {
-            Statement statement = connection.createStatement();
-            return statement.executeQuery(query);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
 }

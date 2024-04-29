@@ -23,6 +23,8 @@ public class Game implements Runnable {
 
     private Text revealedWord;
 
+    private Text hangmanText;
+
     private boolean isLeader;
 
     private final String alphabet = "abcdefghijklmnopqrstuvwxyz";
@@ -33,21 +35,23 @@ public class Game implements Runnable {
     private int stage = 0;
 
     // Constructor for GameMainController
-    public Game(ArrayList<Text> players, ArrayList<Button> letters, Button wordGuessButton, ImageView imageView, Text revealedWord, boolean isLeader) {
+    public Game(ArrayList<Text> players, ArrayList<Button> letters, Button wordGuessButton, ImageView imageView, Text revealedWord, Text hangmanText, boolean isLeader) {
         this.players = players;
         this.letters = letters;
         this.wordGuessButton = wordGuessButton;
         this.imageView = imageView;
         this.revealedWord = revealedWord;
+        this.hangmanText = hangmanText;
         this.isLeader = isLeader;
     }
 
     // Constructor for GameLeaderController
-    public Game(ArrayList<Text> players, ArrayList<Button> letters, ImageView imageView, Text revealedWord, boolean isLeader) {
+    public Game(ArrayList<Text> players, ArrayList<Button> letters, ImageView imageView, Text revealedWord, Text hangmanText, boolean isLeader) {
         this.players = players;
         this.letters = letters;
         this.imageView = imageView;
         this.revealedWord = revealedWord;
+        this.hangmanText = hangmanText;
         this.isLeader = isLeader;
     }
     @Override
@@ -76,8 +80,9 @@ public class Game implements Runnable {
                 wordLengthPlaceholder.append("_ ".repeat(Math.max(0, wordLength)));
                 revealedWord.setText(wordLengthPlaceholder.toString());
 
-            }
-            else if (message.split(" ")[0].equals("ENDGAME")) {
+            } else if (messageArray[0].equals("PLAYER")) {
+                players.get(Integer.parseInt(messageArray[1])).setText(messageArray[2]);
+            } else if (message.split(" ")[0].equals("ENDGAME")) {
                 Debugger.debug("Game Ended");
                 return false;
             } else {
@@ -120,27 +125,19 @@ public class Game implements Runnable {
                 stage++;
                 if (stage > 7) {
                     Debugger.debug("You lose this round");
-                    for (Button letter : letters) {
-                        letter.setDisable(true);
-                    }
-                    if (!isLeader) wordGuessButton.setDisable(true);
+                    lose();
                 } else {
                     imageView.setImage(new javafx.scene.image.Image("res/" + stage + ".png"));
                 }
             } else if (message[0].equals("INCORRECTWORD")) {
                 if (client.getUser().getUsername().equals(message[1])) {
                     Debugger.debug("You lose this round");
-                    for (Button letter : letters) {
-                        letter.setDisable(true);
-                    }
-                    wordGuessButton.setDisable(true);
+                    lose();
                 }
 
             } else if (message[0].equals("WINNER")) {
                 Debugger.debug("Winner: " + message[1]);
-                for (Button letter : letters) {
-                    letter.setDisable(true);
-                }
+                win();
             } else if (message[0].equals("ENDGAME")) {
                 Debugger.debug("Game Ended");
                 break;
@@ -149,5 +146,35 @@ public class Game implements Runnable {
                 Debugger.debug("Invalid message: " + message);
             }
         }
+    }
+
+    public void lose() {
+        for (Button letter : letters) {
+            letter.setDisable(true);
+        }
+        if (!isLeader) wordGuessButton.setDisable(true);
+
+        hangmanText.setText("You Lose");
+        hangmanText.setFill(Color.RED);
+    }
+
+    public void win() {
+        for (Button letter : letters) {
+            letter.setDisable(true);
+        }
+        if (!isLeader) wordGuessButton.setDisable(true);
+
+        hangmanText.setText("You Win!");
+        hangmanText.setFill(Color.GREEN);
+    }
+
+    public void reset() {
+        for (Button letter : letters) {
+            letter.setDisable(true);
+        }
+        if (!isLeader) wordGuessButton.setDisable(true);
+
+        hangmanText.setText("Hangman");
+        hangmanText.setFill(Color.BLACK);
     }
 }

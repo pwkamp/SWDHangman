@@ -1,8 +1,6 @@
-import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Arrays;
 
@@ -118,7 +116,7 @@ public class ClientHandler implements Runnable {
 
     private void joinGame() {
         while (true) {
-            System.out.println("Waiting for game request");
+//            System.out.println("Waiting for game request");
             String[] message = receiveMessage().split(" ");
 
             // join game
@@ -129,7 +127,12 @@ public class ClientHandler implements Runnable {
                 }
 
                 if (!parentServer.gameExistsActive(message[1])) {
-                    sendMessage("Game does not exist");
+                    sendMessage("Lobby is not open");
+                    continue;
+                }
+
+                if (!parentServer.gameJoinable((message[1]))) {
+                    sendMessage("Game has already started");
                     continue;
                 }
                 
@@ -218,10 +221,6 @@ public class ClientHandler implements Runnable {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getUsername() {
-        return username;
     }
 
     public void setLostRound(boolean lost) {

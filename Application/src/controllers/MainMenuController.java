@@ -22,6 +22,7 @@ public class MainMenuController {
         login.setOnAction(actionEvent -> loginClicked());
         createAccount.setOnAction(actionEvent -> createAccountClicked());
 
+
     }
 
     public void loginClicked() {

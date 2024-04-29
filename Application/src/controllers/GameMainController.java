@@ -20,18 +20,14 @@ import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-//TODO: Everything
 public class GameMainController {
     Client client = Client.getInstance();
-
-    @FXML
-    private Text roundText;
 
     @FXML
     private Text usernameText;
 
     @FXML
-    private Text coinsText;
+    private Text hangmanText;
 
     @FXML
     private Text playersText;
@@ -84,19 +80,20 @@ public class GameMainController {
 
         setPlayers();
         setPlayersText();
-        playersText.setText("");
+
+        usernameText.setText(client.getUser().getUsername());
 
         leaveGameButton.setOnAction(actionEvent -> leaveGame());
         wordGuessButton.setOnAction(actionEvent -> wordGuessClicked());
         wordGuessButton.setDisable(true);
 
-        game = new Game(players, letterButtons, wordGuessButton, hangmanImageView, revealedWordText, false);
+        game = new Game(players, letterButtons, wordGuessButton, hangmanImageView, revealedWordText, hangmanText, false);
         executorService.execute(game);
 
     }
 
     private void wordGuessClicked() {
-        String wordGuess = wordGuessField.getText();
+        String wordGuess = wordGuessField.getText().toLowerCase();
         if (wordGuess.length() < 5) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
@@ -146,7 +143,9 @@ public class GameMainController {
     //TODO: Implement leaveGame server / client functionality
     private void leaveGame() {
         try {
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/scenes/GameSelection.fxml")));
+            client.sendData("LEAVEGAME " + client.getUser().getUsername());
+            client.closeConnection();
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/scenes/ServerSelect.fxml")));
             // Get the current window
             Stage currentStage = (Stage) leaveGameButton.getScene().getWindow();
             currentStage.setScene(new Scene(root));
@@ -158,7 +157,7 @@ public class GameMainController {
 
     //TODO: Implement setUsername server / client functionality
     private void setUsername() {
-        usernameText.setText(client.getUsername());
+        usernameText.setText(client.getUser().getUsername());
     }
 
     //TODO: Implement setCoins server / client functionality
