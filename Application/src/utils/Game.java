@@ -75,9 +75,9 @@ public class Game implements Runnable {
 
     private void gameLoop() {
         while (true) {
-            String message = client.awaitMessage();
-            String[] messageArray = message.split(" ");
-            if (messageArray[0].equals("YOURTURN")) {
+            String[] message = client.awaitMessage().split(" ");
+
+            if (message[0].equals("YOURTURN")) {
                 Debugger.debug("My Turn");
 
                 for (Button letter : letters) {
@@ -85,21 +85,21 @@ public class Game implements Runnable {
                         letter.setDisable(false);
                     }
                 }
-            } else if (messageArray[0].equals("CORRECTLETTER")) {
-                guessedLetters.add(messageArray[1]);
-                int index = alphabet.indexOf(messageArray[1]);
+            } else if (message[0].equals("CORRECTLETTER")) {
+                guessedLetters.add(message[1]);
+                int index = alphabet.indexOf(message[1]);
                 letters.get(index).setTextFill(Color.GREEN);
                 letters.get(index).setDisable(true);
-                String formattedRevealedWord = messageArray[2].replace("", " ").trim();
+                String formattedRevealedWord = message[2].replace("", " ").trim();
                 revealedWord.setText(formattedRevealedWord);
 
                 for (Button letter : letters) {
                     letter.setDisable(true);
                 }
 
-            } else if (messageArray[0].equals("INCORRECTLETTER")) {
-                guessedLetters.add(messageArray[1]);
-                int index = alphabet.indexOf(messageArray[1]);
+            } else if (message[0].equals("INCORRECTLETTER")) {
+                guessedLetters.add(message[1]);
+                int index = alphabet.indexOf(message[1]);
                 letters.get(index).setTextFill(Color.RED);
                 letters.get(index).setDisable(true);
                 stage++;
@@ -111,7 +111,7 @@ public class Game implements Runnable {
                 } else {
                     imageView.setImage(new javafx.scene.image.Image("res/" + stage + ".png"));
                 }
-            } else if (messageArray[0].equals("ENDGAME")) {
+            } else if (message[0].equals("ENDGAME")) {
                 Debugger.debug("Game Ended");
                 break;
             }
