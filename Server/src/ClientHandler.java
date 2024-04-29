@@ -14,6 +14,7 @@ public class ClientHandler implements Runnable {
     private final ObjectInputStream inputStream;
     private final Server parentServer;
     private GameHandler gameHandler;
+    private User user;
 
     private boolean lostRound = false;
     private String message = "";
@@ -85,7 +86,8 @@ public class ClientHandler implements Runnable {
                 if (isSuccessful) {
                     dbConnection.log("User created: " + message[1]);
                     sendMessage("success");
-                    sendMessage(dbConnection.getUser(message[1]).serialize());
+                    user = dbConnection.getUser(message[1]);
+                    sendMessage(user.serialize());
                     return;
                 }
 
@@ -103,7 +105,8 @@ public class ClientHandler implements Runnable {
                 } else {
                     dbConnection.log("User logged in: " + message[1]);
                     sendMessage("success");
-                    sendMessage(dbConnection.getUser(message[1]).serialize());
+                    user = dbConnection.getUser(message[1]);
+                    sendMessage(user.serialize());
                     return;
                 }
             }

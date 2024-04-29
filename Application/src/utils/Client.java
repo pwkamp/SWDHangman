@@ -37,6 +37,9 @@ public final class Client implements Runnable {
         this.user = user;
     }
 
+    public User getUser() {
+        return user;
+    }
 
     /**
      * Constructs a new client with the specified host and port.
