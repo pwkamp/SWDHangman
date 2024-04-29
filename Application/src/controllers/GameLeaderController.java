@@ -89,6 +89,8 @@ public class GameLeaderController {
         setPlayers();
         setPlayersText();
 
+        player1Text.setText(client.getUser().getUsername());
+
         usernameText.setText(client.getUser().getUsername());
 
         leaveGameButton.setOnAction(actionEvent -> leaveGame());

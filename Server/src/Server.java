@@ -59,6 +59,10 @@ public class Server {
         client.setGameHandler(game);
         client.sendMessage("JOIN success");
         client.setUsername(name);
+
+        for (int i = 0; i < game.getClients().size(); i++) {
+          game.messageClients("PLAYER " + i + " " + game.getClients().get(i).getUser().getUsername());
+        }
         return;
       }
     }

@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 
 // This class is responsible for handling the game logic
 public class GameHandler implements Runnable{
@@ -37,9 +38,6 @@ public class GameHandler implements Runnable{
         dbConnection.log(joinCode + ": Awaiting players");
 
         while (true) {
-            for (int i = 0; i < clients.size(); i++) {
-                messageClients("PLAYER " + i + " " + clients.get(i).getUser().getUsername());
-            }
 
             String[] message = leader.awaitMessage().split(" ");
             if (message[0].equals("START")) {
@@ -81,6 +79,9 @@ public class GameHandler implements Runnable{
                     clients.remove(client);
                     dbConnection.log(joinCode + ": " + client.getUser().getUsername() + " left the game");
                     dbConnection.leaveGame(client.getUser().getUsername(), joinCode);
+                    for (int i = 0; i < clients.size(); i++) {
+                        messageClients("PLAYER " + i + " " + clients.get(i).getUser().getUsername());
+                    }
                 }
             }
 
@@ -157,7 +158,7 @@ public class GameHandler implements Runnable{
         dbConnection.joinGame(client.getUser().getUsername(), joinCode);
     }
 
-    private void messageClients(String message) {
+    public void messageClients(String message) {
         for (ClientHandler client : clients) {
             client.sendMessage(message);
         }
@@ -191,5 +192,8 @@ public class GameHandler implements Runnable{
 
     public String getState() {
         return state;
+    }
+    public ArrayList<ClientHandler> getClients() {
+        return clients;
     }
 }
