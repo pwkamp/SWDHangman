@@ -34,14 +34,10 @@ public class GameSelectionController {
     Text username;
 
     @FXML
-    Text coins;
-
-    @FXML
     public void initialize() {
         Debugger.debug("Game Selection Initialized");
 
         setUsername();
-        setCoins();
 
         logout.setOnAction(actionEvent -> logoutClicked());
         joinGame.setOnAction(actionEvent -> joinGameClicked());
@@ -50,10 +46,10 @@ public class GameSelectionController {
     }
 
     private void logoutClicked() {
-        System.exit(0);
         try {
+            client.closeConnection();
             //TODO: Add any needed functionality to logout that does not involve JavaFX scene switching back to the Main Menu
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/scenes/MainMenu.fxml")));
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/scenes/ServerSelect.fxml")));
             // Get the current window
             Stage currentStage = (Stage) logout.getScene().getWindow();
             currentStage.setScene(new Scene(root));
@@ -69,7 +65,7 @@ public class GameSelectionController {
         //TODO: Check if the game code is valid from the server
         if (validateGameCode()) {
             Debugger.debug("Game Code is valid");
-            client.sendData("JOIN " + gameCode.getText() + " " + client.getUsername());
+            client.sendData("JOIN " + gameCode.getText() + " " + client.getUser().getUsername());
             String message = client.awaitMessage();
             if (message.contains("success")) {
                 Debugger.debug("Joining game");
@@ -112,7 +108,7 @@ public class GameSelectionController {
 
     private void joinGame() {
         try {
-            //TODO: Add any needed functionality to logout that does not involve JavaFX scene switching back to the Main Menu
+            //TODO: Add any needed functionality to that does not involve JavaFX scene switching back to the Main Menu
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/scenes/GameMain.fxml")));
             // Get the current window
             Stage currentStage = (Stage) joinGame.getScene().getWindow();
@@ -133,7 +129,7 @@ public class GameSelectionController {
         client.setGameCode(gameCode);
         client.setWordOptions(wordOptions);
         try {
-            //TODO: Add any needed functionality to logout that does not involve JavaFX scene switching back to the Main Menu
+            //TODO: Add any needed functionality that does not involve JavaFX scene switching back to the Main Menu
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/scenes/GameLeader.fxml")));
             // Get the current window
             Stage currentStage = (Stage) joinGame.getScene().getWindow();
@@ -145,14 +141,8 @@ public class GameSelectionController {
         }
     }
 
-    private void setCoins() {
-        //TODO: Get the user's coins from the server and set the text to the number of coins
-        client.sendData("COINS " + client.getUsername());
-        coins.setText(client.awaitMessage().split(" ")[1]);
-    }
-
     private void setUsername() {
         //TODO: Get the user's username from the server and set the text to the username
-        username.setText(client.getUsername());
+        username.setText(client.getUser().getUsername());
     }
 }

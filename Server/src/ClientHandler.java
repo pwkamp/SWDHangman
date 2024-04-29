@@ -118,7 +118,7 @@ public class ClientHandler implements Runnable {
 
     private void joinGame() {
         while (true) {
-            System.out.println("Waiting for game request");
+//            System.out.println("Waiting for game request");
             String[] message = receiveMessage().split(" ");
 
             // join game

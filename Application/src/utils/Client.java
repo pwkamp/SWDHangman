@@ -77,7 +77,7 @@ public final class Client implements Runnable {
      * Closes the connection and the I/O streams.
      * @author Peter Kamp
      */
-    private void closeConnection() {
+    public void closeConnection() {
         displayMessage("\nClosing connection");
 
         try {
@@ -143,14 +143,6 @@ public final class Client implements Runnable {
         sb.append(" ");
         sb.append(gameCode);
         sendData(sb.toString());
-    }
-
-    public void setUsername(String text) {
-        this.username = text;
-    }
-
-    public String getUsername() {
-        return username;
     }
 
     public void setWordOptions(String[] wordOptions) {

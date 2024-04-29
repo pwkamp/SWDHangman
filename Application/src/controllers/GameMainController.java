@@ -20,18 +20,12 @@ import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-//TODO: Everything
 public class GameMainController {
     Client client = Client.getInstance();
 
     @FXML
-    private Text roundText;
-
-    @FXML
     private Text usernameText;
 
-    @FXML
-    private Text coinsText;
 
     @FXML
     private Text playersText;
@@ -85,6 +79,8 @@ public class GameMainController {
         setPlayers();
         setPlayersText();
         playersText.setText("");
+
+        usernameText.setText(client.getUser().getUsername());
 
         leaveGameButton.setOnAction(actionEvent -> leaveGame());
         wordGuessButton.setOnAction(actionEvent -> wordGuessClicked());
@@ -158,7 +154,7 @@ public class GameMainController {
 
     //TODO: Implement setUsername server / client functionality
     private void setUsername() {
-        usernameText.setText(client.getUsername());
+        usernameText.setText(client.getUser().getUsername());
     }
 
     //TODO: Implement setCoins server / client functionality

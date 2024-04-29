@@ -23,14 +23,9 @@ import java.util.concurrent.Executors;
 public class GameLeaderController {
     private Client client = Client.getInstance();
 
-    @FXML
-    private Text roundText;
 
     @FXML
     private Text usernameText;
-
-    @FXML
-    private Text coinsText;
 
     @FXML
     private Text playersText;
@@ -90,6 +85,9 @@ public class GameLeaderController {
         setupLeaderFunctions();
         setPlayers();
         setPlayersText();
+
+        usernameText.setText(client.getUser().getUsername());
+
         playersText.setText("");
         leaveGameButton.setOnAction(actionEvent -> leaveGame());
         game = new Game(players, letterButtons, hangmanImageView, revealedWordText, true);

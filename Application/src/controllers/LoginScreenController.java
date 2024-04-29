@@ -59,6 +59,7 @@ public class LoginScreenController {
         System.out.println(message);
         if (message.equals("success")) {
             client.setUser(User.deserialize(client.awaitMessage()));
+            Debugger.debug("User: " + client.getUser().getUsername());
             Debugger.debug("Login success");
             loginSuccess();
         } else {
@@ -78,7 +79,7 @@ public class LoginScreenController {
             currentStage.setScene(new Scene(root));
         } catch (Exception e) {
             System.out.println(e);
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 

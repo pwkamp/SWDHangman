@@ -45,9 +45,9 @@
         </VBox>
         <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1">
             <children>
-                <Label text="Hangman 2: Electric Boogaloo" textAlignment="CENTER" wrapText="true">
+                <Label minWidth="-Infinity" text="Hangman" textAlignment="CENTER" wrapText="true" StackPane.alignment="CENTER">
                     <font>
-                        <Font size="24.0" />
+                        <Font size="45.0" />
                     </font>
                 </Label>
             </children>
@@ -58,14 +58,6 @@
                <font>
                   <Font size="20.0" />
                </font>
-            </Text>
-            <Text fx:id="coins" strokeType="OUTSIDE" strokeWidth="0.0" text="Coins: 0" textAlignment="RIGHT" wrappingWidth="177.13671875">
-               <font>
-                  <Font size="14.0" />
-               </font>
-               <VBox.margin>
-                  <Insets bottom="10.0" />
-               </VBox.margin>
             </Text>
               <Button fx:id="logout" mnemonicParsing="false" text="Logout">
                <VBox.margin>
