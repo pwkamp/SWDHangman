@@ -14,6 +14,7 @@ import java.util.Objects;
 
 import utils.Client;
 import utils.Debugger;
+import utils.User;
 
 public class LoginScreenController {
 
@@ -57,6 +58,7 @@ public class LoginScreenController {
         String message = client.awaitMessage();
         System.out.println(message);
         if (message.equals("success")) {
+            client.setUser(User.deserialize(client.awaitMessage()));
             Debugger.debug("Login success");
             loginSuccess();
         } else {

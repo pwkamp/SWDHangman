@@ -31,6 +31,11 @@ public final class Client implements Runnable {
     private static String password;
     private static String coins;
     private static String[] wordOptions;
+    private User user;
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
 
     /**

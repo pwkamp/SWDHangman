@@ -14,6 +14,7 @@ import java.util.Objects;
 
 import utils.Client;
 import utils.Debugger;
+import utils.User;
 
 
 public class CreateAccountController {
@@ -63,6 +64,7 @@ public class CreateAccountController {
             String message = client.awaitMessage();
             if (message.equals("success")) {
                 Debugger.debug("Account created");
+                client.setUser(User.deserialize(client.awaitMessage()));
                 loginSuccess();
             } else {
                 Debugger.debug("Account not created");

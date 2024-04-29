@@ -85,6 +85,7 @@ public class ClientHandler implements Runnable {
                 if (isSuccessful) {
                     dbConnection.log("User created: " + message[1]);
                     sendMessage("success");
+                    sendMessage(dbConnection.getUser(message[1]).serialize());
                     return;
                 }
 
@@ -102,6 +103,7 @@ public class ClientHandler implements Runnable {
                 } else {
                     dbConnection.log("User logged in: " + message[1]);
                     sendMessage("success");
+                    sendMessage(dbConnection.getUser(message[1]).serialize());
                     return;
                 }
             }

@@ -141,6 +141,8 @@ public class DBConnection {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        // Return a blank user if the user does not exist
         return new User("", "", -1);
     }
 
