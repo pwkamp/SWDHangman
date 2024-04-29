@@ -118,7 +118,7 @@ public class GameHandler implements Runnable{
                         dbConnection.log(joinCode + ": " + client.getUsername() + " guessed word incorrectly");
                         System.out.println(joinCode + ": " + client.getUsername() + " guessed word incorrectly");
                         client.setLostRound(true);
-                        messageClients("INCORRECTWORD");
+                        messageClients("INCORRECTWORD " + client.getUsername());
                     }
                 } else {
                     dbConnection.log(joinCode + ": Invalid message " + message);

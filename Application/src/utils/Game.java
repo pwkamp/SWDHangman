@@ -17,6 +17,8 @@ public class Game implements Runnable {
     private ArrayList<Text> players;
     private ArrayList<Button> letters;
 
+    private Button wordGuessButton;
+
     private ImageView imageView;
 
     private Text revealedWord;
@@ -30,6 +32,17 @@ public class Game implements Runnable {
     int wordLength;
     private int stage = 0;
 
+    // Constructor for GameMainController
+    public Game(ArrayList<Text> players, ArrayList<Button> letters, Button wordGuessButton, ImageView imageView, Text revealedWord, boolean isLeader) {
+        this.players = players;
+        this.letters = letters;
+        this.wordGuessButton = wordGuessButton;
+        this.imageView = imageView;
+        this.revealedWord = revealedWord;
+        this.isLeader = isLeader;
+    }
+
+    // Constructor for GameLeaderController
     public Game(ArrayList<Text> players, ArrayList<Button> letters, ImageView imageView, Text revealedWord, boolean isLeader) {
         this.players = players;
         this.letters = letters;
@@ -85,6 +98,7 @@ public class Game implements Runnable {
                         letter.setDisable(false);
                     }
                 }
+                if (!isLeader) wordGuessButton.setDisable(false);
             } else if (message[0].equals("CORRECTLETTER")) {
                 guessedLetters.add(message[1]);
                 int index = alphabet.indexOf(message[1]);
@@ -96,6 +110,7 @@ public class Game implements Runnable {
                 for (Button letter : letters) {
                     letter.setDisable(true);
                 }
+                if (!isLeader) wordGuessButton.setDisable(true);
 
             } else if (message[0].equals("INCORRECTLETTER")) {
                 guessedLetters.add(message[1]);
@@ -108,14 +123,19 @@ public class Game implements Runnable {
                     for (Button letter : letters) {
                         letter.setDisable(true);
                     }
+                    if (!isLeader) wordGuessButton.setDisable(true);
                 } else {
                     imageView.setImage(new javafx.scene.image.Image("res/" + stage + ".png"));
                 }
             } else if (message[0].equals("INCORRECTWORD")) {
-                Debugger.debug("Round Lost");
-                for (Button letter : letters) {
-                    letter.setDisable(true);
+                if (client.getUsername().equals(message[1])) {
+                    Debugger.debug("You lose this round");
+                    for (Button letter : letters) {
+                        letter.setDisable(true);
+                    }
+                    wordGuessButton.setDisable(true);
                 }
+
             } else if (message[0].equals("WINNER")) {
                 Debugger.debug("Winner: " + message[1]);
                 for (Button letter : letters) {

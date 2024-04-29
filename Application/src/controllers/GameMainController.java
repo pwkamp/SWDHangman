@@ -88,8 +88,9 @@ public class GameMainController {
 
         leaveGameButton.setOnAction(actionEvent -> leaveGame());
         wordGuessButton.setOnAction(actionEvent -> wordGuessClicked());
+        wordGuessButton.setDisable(true);
 
-        game = new Game(players, letterButtons, hangmanImageView, revealedWordText, false);
+        game = new Game(players, letterButtons, wordGuessButton, hangmanImageView, revealedWordText, false);
         executorService.execute(game);
 
     }
