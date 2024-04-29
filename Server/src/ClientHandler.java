@@ -129,7 +129,12 @@ public class ClientHandler implements Runnable {
                 }
 
                 if (!parentServer.gameExistsActive(message[1])) {
-                    sendMessage("Game does not exist");
+                    sendMessage("Lobby is not open");
+                    continue;
+                }
+
+                if (parentServer.gameAlreadyActive((message[1]))) {
+                    sendMessage("Game has already started");
                     continue;
                 }
                 
@@ -218,10 +223,6 @@ public class ClientHandler implements Runnable {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getUsername() {
-        return username;
     }
 
     public void setLostRound(boolean lost) {

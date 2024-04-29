@@ -28,6 +28,9 @@ public class GameLeaderController {
     private Text usernameText;
 
     @FXML
+    private Text hangmanText;
+
+    @FXML
     private Text playersText;
 
     @FXML
@@ -90,7 +93,7 @@ public class GameLeaderController {
 
         playersText.setText("");
         leaveGameButton.setOnAction(actionEvent -> leaveGame());
-        game = new Game(players, letterButtons, hangmanImageView, revealedWordText, true);
+        game = new Game(players, letterButtons, hangmanImageView, revealedWordText, hangmanText, true);
         executorService.execute(game);
     }
 
@@ -179,9 +182,10 @@ public class GameLeaderController {
 
     //TODO: Implement leaveGame server / client functionality
     private void leaveGame() {
-        client.sendData("LEAVEGAME");
+        client.sendData("ENDGAME " + client.getUser().getUsername());
+        client.closeConnection();
         try {
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/scenes/GameSelection.fxml")));
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/scenes/ServerSelect.fxml")));
             // Get the current window
             Stage currentStage = (Stage) leaveGameButton.getScene().getWindow();
             currentStage.setScene(new Scene(root));

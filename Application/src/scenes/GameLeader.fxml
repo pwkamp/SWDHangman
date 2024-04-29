@@ -39,7 +39,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Text fx:id="roundText" strokeType="OUTSIDE" strokeWidth="0.0" text="Hangman" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                  <Text fx:id="hangmanText" strokeType="OUTSIDE" strokeWidth="0.0" text="Hangman" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <font>
                         <Font size="30.0" />
                      </font>

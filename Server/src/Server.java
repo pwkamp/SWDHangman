@@ -74,6 +74,17 @@ public class Server {
     return false;
   }
 
+  public boolean gameAlreadyActive(String code) {
+    for (GameHandler game : games) {
+      if (game.getJoinCode().equals(code)) {
+        if (!game.getState().equals("waiting")) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   ////////////////// MAIN //////////////////
 
   public static void main(String[] args) {
