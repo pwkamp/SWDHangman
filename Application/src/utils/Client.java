@@ -157,4 +157,8 @@ public final class Client implements Runnable {
     public String[] getWordOptions() {
         return wordOptions;
     }
+
+    public User getUser() {
+        return user;
+    }
 }
