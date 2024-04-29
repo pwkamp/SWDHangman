@@ -111,6 +111,16 @@ public class Game implements Runnable {
                 } else {
                     imageView.setImage(new javafx.scene.image.Image("res/" + stage + ".png"));
                 }
+            } else if (message[0].equals("INCORRECTWORD")) {
+                Debugger.debug("Round Lost");
+                for (Button letter : letters) {
+                    letter.setDisable(true);
+                }
+            } else if (message[0].equals("WINNER")) {
+                Debugger.debug("Winner: " + message[1]);
+                for (Button letter : letters) {
+                    letter.setDisable(true);
+                }
             } else if (message[0].equals("ENDGAME")) {
                 Debugger.debug("Game Ended");
                 break;

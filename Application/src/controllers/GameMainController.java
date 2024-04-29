@@ -4,7 +4,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
@@ -56,6 +58,12 @@ public class GameMainController {
     private Button leaveGameButton;
 
     @FXML
+    private TextField wordGuessField;
+
+    @FXML
+    private Button wordGuessButton;
+
+    @FXML
     private Text revealedWordText;
 
     private ArrayList<Button> letterButtons;
@@ -79,10 +87,23 @@ public class GameMainController {
         playersText.setText("");
 
         leaveGameButton.setOnAction(actionEvent -> leaveGame());
+        wordGuessButton.setOnAction(actionEvent -> wordGuessClicked());
 
         game = new Game(players, letterButtons, hangmanImageView, revealedWordText, false);
         executorService.execute(game);
 
+    }
+
+    private void wordGuessClicked() {
+        String wordGuess = wordGuessField.getText();
+        if (wordGuess.length() < 5) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Word must be at least 5 characters long");
+            alert.showAndWait();
+        } else {
+            client.sendData("WORD " + wordGuess);
+        }
     }
 
     private void setLetterButtons() {

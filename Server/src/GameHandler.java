@@ -72,7 +72,7 @@ public class GameHandler implements Runnable{
         dbConnection.log(joinCode + ": Game loop entered");
         while (true) {
             for (ClientHandler client : clients) {
-                if (client.equals(leader)) {
+                if (client.equals(leader) || client.hasLostRound()) {
                     continue;
                 }
                 try {
@@ -86,29 +86,48 @@ public class GameHandler implements Runnable{
                 if (message[0].equals("LETTER")) {
                     dbConnection.log(joinCode + ": " + client.getUsername() + " guessed " + message[1]);
                     System.out.println(joinCode + ": " + client.getUsername() + " guessed " + message[1]);
-                }
-                if (word.contains(message[1])) {
-                    dbConnection.log(joinCode + ": " + client.getUsername() + " guessed correctly");
-                    System.out.println(joinCode + ": " + client.getUsername() + " guessed correctly");
 
-                    for (int i = 0; i < word.length(); i++) {
-                        if (word.charAt(i) == message[1].charAt(0)) {
-                            currentlyRevealedWord = currentlyRevealedWord.substring(0, i) + message[1] + currentlyRevealedWord.substring(i + 1);
+                    if (word.contains(message[1])) {
+                        dbConnection.log(joinCode + ": " + client.getUsername() + " guessed correctly");
+                        System.out.println(joinCode + ": " + client.getUsername() + " guessed correctly");
+
+                        for (int i = 0; i < word.length(); i++) {
+                            if (word.charAt(i) == message[1].charAt(0)) {
+                                currentlyRevealedWord = currentlyRevealedWord.substring(0, i) + message[1] + currentlyRevealedWord.substring(i + 1);
+                            }
                         }
-                    }
 
-                    System.out.println(Arrays.toString(currentlyRevealedWord.split("_ ")));
-                    if (Arrays.toString(currentlyRevealedWord.split("_ ")).equals(word)) {
+                        System.out.println(Arrays.toString(currentlyRevealedWord.split("_ ")));
+                        if (Arrays.toString(currentlyRevealedWord.split("_ ")).equals(word)) {
+                            dbConnection.log(joinCode + ": " + client.getUsername() + " won");
+                            System.out.println(joinCode + ": " + client.getUsername() + " won");
+                            messageClients("WINNER " + client.getUsername());
+                        } else {
+                            messageClients("CORRECTLETTER " + message[1] + " " + currentlyRevealedWord);
+                        }
+                    } else {
+                        dbConnection.log(joinCode + ": " + client.getUsername() + " guessed incorrectly");
+                        System.out.println(joinCode + ": " + client.getUsername() + " guessed incorrectly");
+                        messageClients("INCORRECTLETTER " + message[1]);
+                    }
+                } else if (message[0].equals("WORD")) {
+                    dbConnection.log(joinCode + ": " + client.getUsername() + " guessed word " + message[1]);
+                    System.out.println(joinCode + ": " + client.getUsername() + " guessed word " + message[1]);
+
+                    if (word.equals(message[1])) {
                         dbConnection.log(joinCode + ": " + client.getUsername() + " won");
                         System.out.println(joinCode + ": " + client.getUsername() + " won");
                         messageClients("WINNER " + client.getUsername());
                     } else {
-                        messageClients("CORRECTLETTER " + message[1] + " " + currentlyRevealedWord);
+                        dbConnection.log(joinCode + ": " + client.getUsername() + " guessed word incorrectly");
+                        System.out.println(joinCode + ": " + client.getUsername() + " guessed word incorrectly");
+                        client.setLostRound(true);
+                        messageClients("INCORRECTWORD");
                     }
                 } else {
-                    dbConnection.log(joinCode + ": " + client.getUsername() + " guessed incorrectly");
-                    System.out.println(joinCode + ": " + client.getUsername() + " guessed incorrectly");
-                    messageClients("INCORRECTLETTER " + message[1]);
+                    dbConnection.log(joinCode + ": Invalid message " + message);
+                    System.out.println(joinCode + ": Invalid message " + message);
+                    return;
                 }
             }
         }
