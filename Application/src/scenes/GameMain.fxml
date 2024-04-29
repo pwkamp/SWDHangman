@@ -98,36 +98,6 @@
                               <Insets left="10.0" />
                            </VBox.margin>
                         </Text>
-                        <Text fx:id="player5Text" strokeType="OUTSIDE" strokeWidth="0.0" text="Player5">
-                           <VBox.margin>
-                              <Insets left="10.0" />
-                           </VBox.margin>
-                        </Text>
-                        <Text fx:id="player6Text" strokeType="OUTSIDE" strokeWidth="0.0" text="Player6">
-                           <VBox.margin>
-                              <Insets left="10.0" />
-                           </VBox.margin>
-                        </Text>
-                        <Text fx:id="player7Text" strokeType="OUTSIDE" strokeWidth="0.0" text="Player7">
-                           <VBox.margin>
-                              <Insets left="10.0" />
-                           </VBox.margin>
-                        </Text>
-                        <Text fx:id="player8Text" strokeType="OUTSIDE" strokeWidth="0.0" text="Player8">
-                           <VBox.margin>
-                              <Insets left="10.0" />
-                           </VBox.margin>
-                        </Text>
-                        <Text fx:id="player9Text" strokeType="OUTSIDE" strokeWidth="0.0" text="Player9">
-                           <VBox.margin>
-                              <Insets left="10.0" />
-                           </VBox.margin>
-                        </Text>
-                        <Text fx:id="player10Text" strokeType="OUTSIDE" strokeWidth="0.0" text="Player10">
-                           <VBox.margin>
-                              <Insets left="10.0" />
-                           </VBox.margin>
-                        </Text>
                      </children>
                   </VBox>
                   <ImageView fx:id="hangmanImageView" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
