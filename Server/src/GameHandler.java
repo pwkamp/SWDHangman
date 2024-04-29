@@ -37,6 +37,10 @@ public class GameHandler implements Runnable{
         dbConnection.log(joinCode + ": Awaiting players");
 
         while (true) {
+            for (int i = 0; i < clients.size(); i++) {
+                messageClients("PLAYER " + i + " " + clients.get(i).getUser().getUsername());
+            }
+
             String[] message = leader.awaitMessage().split(" ");
             if (message[0].equals("START")) {
                 dbConnection.setGameState(joinCode, "active");

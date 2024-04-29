@@ -1,8 +1,6 @@
-import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Arrays;
 
@@ -133,7 +131,7 @@ public class ClientHandler implements Runnable {
                     continue;
                 }
 
-                if (parentServer.gameAlreadyActive((message[1]))) {
+                if (!parentServer.gameJoinable((message[1]))) {
                     sendMessage("Game has already started");
                     continue;
                 }

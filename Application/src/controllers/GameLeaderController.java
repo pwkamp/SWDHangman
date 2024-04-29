@@ -91,7 +91,6 @@ public class GameLeaderController {
 
         usernameText.setText(client.getUser().getUsername());
 
-        playersText.setText("");
         leaveGameButton.setOnAction(actionEvent -> leaveGame());
         game = new Game(players, letterButtons, hangmanImageView, revealedWordText, hangmanText, true);
         executorService.execute(game);

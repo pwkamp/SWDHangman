@@ -80,7 +80,6 @@ public class GameMainController {
 
         setPlayers();
         setPlayersText();
-        playersText.setText("");
 
         usernameText.setText(client.getUser().getUsername());
 

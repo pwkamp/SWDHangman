@@ -74,10 +74,10 @@ public class Server {
     return false;
   }
 
-  public boolean gameAlreadyActive(String code) {
+  public boolean gameJoinable(String code) {
     for (GameHandler game : games) {
       if (game.getJoinCode().equals(code)) {
-        if (!game.getState().equals("waiting")) {
+        if (game.getState().equals("waiting")) {
           return true;
         }
       }

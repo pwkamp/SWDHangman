@@ -80,8 +80,9 @@ public class Game implements Runnable {
                 wordLengthPlaceholder.append("_ ".repeat(Math.max(0, wordLength)));
                 revealedWord.setText(wordLengthPlaceholder.toString());
 
-            }
-            else if (message.split(" ")[0].equals("ENDGAME")) {
+            } else if (messageArray[0].equals("PLAYER")) {
+                players.get(Integer.parseInt(messageArray[1])).setText(messageArray[2]);
+            } else if (message.split(" ")[0].equals("ENDGAME")) {
                 Debugger.debug("Game Ended");
                 return false;
             } else {
