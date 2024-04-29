@@ -73,17 +73,17 @@ public class GameHandler implements Runnable{
                 return false;
             }
 
-            for (ClientHandler client : clients) {
-                String[] message2 = client.awaitMessage().split(" ");
-                if (message2[0].equals("LEAVEGAME")) {
-                    clients.remove(client);
-                    dbConnection.log(joinCode + ": " + client.getUser().getUsername() + " left the game");
-                    dbConnection.leaveGame(client.getUser().getUsername(), joinCode);
-                    for (int i = 0; i < clients.size(); i++) {
-                        messageClients("PLAYER " + i + " " + clients.get(i).getUser().getUsername());
-                    }
-                }
-            }
+//            for (ClientHandler client : clients) {
+//                String[] message2 = client.awaitMessage().split(" ");
+//                if (message2[0].equals("LEAVEGAME")) {
+//                    clients.remove(client);
+//                    dbConnection.log(joinCode + ": " + client.getUser().getUsername() + " left the game");
+//                    dbConnection.leaveGame(client.getUser().getUsername(), joinCode);
+//                    for (int i = 0; i < clients.size(); i++) {
+//                        messageClients("PLAYER " + i + " " + clients.get(i).getUser().getUsername());
+//                    }
+//                }
+//            }
 
         }
     }
