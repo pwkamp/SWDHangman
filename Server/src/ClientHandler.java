@@ -14,20 +14,11 @@ public class ClientHandler implements Runnable {
     private final ObjectInputStream inputStream;
     private final Server parentServer;
     private GameHandler gameHandler;
-    private boolean isConnectionOpen;
-    private User user;
 
     private boolean lostRound = false;
-    String state;
-
     private String message = "";
 
     private String username;
-
-
-    public boolean isConnectionOpen() {
-        return isConnectionOpen;
-    }
 
     public ClientHandler(Socket socket, DBConnection dbConnection, Server parentServer) {
         dbConnection.log("Client connected: " + socket.getInetAddress() + ":" + socket.getPort());

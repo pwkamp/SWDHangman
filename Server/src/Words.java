@@ -2,7 +2,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Words {
     ArrayList<String> words = new ArrayList<>();
@@ -16,13 +18,12 @@ public class Words {
     }
 
     public void addWordsFromFile(String path) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(new File(path).getAbsolutePath()));
-        String line = reader.readLine();
+        Scanner reader = new Scanner(Paths.get(path));
+        String line;
 
-        System.out.println(line);
-        while (line != null) {
+        while (reader.hasNext()) {
+            line = reader.nextLine();
             words.add(line.toLowerCase());
-            line = reader.readLine();
         }
     }
 

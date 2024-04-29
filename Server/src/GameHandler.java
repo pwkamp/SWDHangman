@@ -4,15 +4,10 @@ import java.util.Arrays;
 // This class is responsible for handling the game logic
 public class GameHandler implements Runnable{
     ArrayList<ClientHandler> clients = new ArrayList<>();
-
     ClientHandler leader;
-
     DBConnection dbConnection;
-
     String joinCode;
-
     String word = "";
-
     String currentlyRevealedWord = "";
     private String[] wordOptions;
 
@@ -21,6 +16,7 @@ public class GameHandler implements Runnable{
         clients.add(leader);
         this.dbConnection = dbConnection;
         joinCode = dbConnection.generateGameCode();
+
         //TODO: Implement get name function
         dbConnection.createGame("test", joinCode);
         dbConnection.log("Game created with join code: " + joinCode);
