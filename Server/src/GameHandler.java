@@ -82,20 +82,18 @@ public class GameHandler implements Runnable{
                 }
 
                 client.sendMessage("YOURTURN");
-                client.awaitMessage();
-                String message = client.getMessage();
-                String[] messageArray = message.split(" ");
-                if (messageArray[0].equals("LETTER")) {
-                    dbConnection.log(joinCode + ": " + client.getUsername() + " guessed " + messageArray[1]);
-                    System.out.println(joinCode + ": " + client.getUsername() + " guessed " + messageArray[1]);
+                String[] message = client.awaitMessage().split(" ");
+                if (message[0].equals("LETTER")) {
+                    dbConnection.log(joinCode + ": " + client.getUsername() + " guessed " + message[1]);
+                    System.out.println(joinCode + ": " + client.getUsername() + " guessed " + message[1]);
                 }
-                if (word.contains(messageArray[1])) {
+                if (word.contains(message[1])) {
                     dbConnection.log(joinCode + ": " + client.getUsername() + " guessed correctly");
                     System.out.println(joinCode + ": " + client.getUsername() + " guessed correctly");
 
                     for (int i = 0; i < word.length(); i++) {
-                        if (word.charAt(i) == messageArray[1].charAt(0)) {
-                            currentlyRevealedWord = currentlyRevealedWord.substring(0, i) + messageArray[1] + currentlyRevealedWord.substring(i + 1);
+                        if (word.charAt(i) == message[1].charAt(0)) {
+                            currentlyRevealedWord = currentlyRevealedWord.substring(0, i) + message[1] + currentlyRevealedWord.substring(i + 1);
                         }
                     }
 
@@ -105,12 +103,12 @@ public class GameHandler implements Runnable{
                         System.out.println(joinCode + ": " + client.getUsername() + " won");
                         messageClients("WINNER " + client.getUsername());
                     } else {
-                        messageClients("CORRECTLETTER " + messageArray[1] + " " + currentlyRevealedWord);
+                        messageClients("CORRECTLETTER " + message[1] + " " + currentlyRevealedWord);
                     }
                 } else {
                     dbConnection.log(joinCode + ": " + client.getUsername() + " guessed incorrectly");
                     System.out.println(joinCode + ": " + client.getUsername() + " guessed incorrectly");
-                    messageClients("INCORRECTLETTER " + messageArray[1]);
+                    messageClients("INCORRECTLETTER " + message[1]);
                 }
             }
         }
